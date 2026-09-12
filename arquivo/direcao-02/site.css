@@ -1,0 +1,373 @@
+/* ==========================================================================
+   Moza · componentes de página
+   Depende de moza.css (tokens e sistema). Só o que é específico do site.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   O cubo de roda
+   Fundo fixo do documento inteiro. O cubo fica no centro exato da tela e a
+   roda gira conforme a página desce. Todo o resto vive por cima.
+   -------------------------------------------------------------------------- */
+.cubo{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.topo,main,.rodape,.medidor{position:relative;z-index:1}
+.topo{z-index:40}
+
+/* Mostrador do empeno. Acende na seção do método e lê o aro que está girando. */
+.medidor{position:fixed;left:clamp(16px,3vw,var(--s4));bottom:clamp(16px,3vw,var(--s4));
+  z-index:30;display:flex;flex-direction:column;gap:2px;padding:14px 18px;
+  background:rgba(14,20,27,.82);backdrop-filter:saturate(150%) blur(14px);
+  border:1px solid var(--fio-2);border-radius:var(--canto);
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity 500ms ease,transform 500ms cubic-bezier(.22,.61,.36,1)}
+.medidor--vivo{opacity:1;transform:none}
+.medidor__valor{margin:0;font-size:30px;font-weight:300;color:var(--claro);line-height:1.05}
+.medidor__veredito{margin:0;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mudo)}
+.medidor--centrada .medidor__valor,.medidor--centrada .medidor__veredito{color:var(--ciano)}
+
+/* --------------------------------------------------------------------------
+   Topo
+   -------------------------------------------------------------------------- */
+.topo{position:sticky;top:0;z-index:40;background:rgba(11,15,20,.82);
+  backdrop-filter:saturate(140%) blur(16px);border-bottom:1px solid transparent;
+  transition:border-color var(--transicao),background var(--transicao)}
+.topo--rolado{border-bottom-color:var(--fio)}
+
+.topo__linha{display:flex;align-items:center;gap:var(--s3);
+  min-height:68px;padding-block:12px}
+
+.topo__marca{display:flex;align-items:center;flex:0 0 auto;line-height:0;min-height:44px;padding-right:var(--s2)}
+.topo__marca svg{width:96px;height:auto}
+
+.topo__nav{display:none;gap:var(--s3);margin-inline:auto}
+.topo__nav a{font-family:var(--f-display);font-size:13px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--mudo);text-decoration:none;
+  padding:8px 0;transition:color var(--transicao)}
+.topo__nav a:hover,.topo__nav a[aria-current="true"]{color:var(--claro)}
+
+.topo__cta{display:none;margin-left:auto;padding:12px 20px;font-size:13px}
+.topo__zap{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;
+  width:44px;height:44px;border:1px solid var(--fio-2);border-radius:var(--canto);
+  color:var(--ciano);transition:border-color var(--transicao)}
+.topo__zap:hover{border-color:var(--ciano)}
+.topo__zap svg{width:20px;height:20px}
+
+@media (min-width:900px){
+  .topo__nav{display:flex}
+  .topo__cta{display:inline-flex}
+  .topo__zap{display:none}
+}
+
+/* --------------------------------------------------------------------------
+   Hero
+   Foto real do pátio por baixo, camada de instrumento por cima. A foto ancora
+   no nicho, o instrumento diz que aqui se mede. As duas leituras do mesmo dado
+   convivem: o cubo girando e o traço de telemetria no pé.
+   -------------------------------------------------------------------------- */
+.hero{position:relative;isolation:isolate;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  min-height:min(94vh,900px);padding-top:clamp(var(--s5),10vh,var(--s7))}
+
+.hero__foto{position:absolute;inset:0;z-index:-3;display:block}
+.hero__foto img{width:100%;height:100%;object-fit:cover;object-position:56% 46%;
+  filter:saturate(.38) contrast(1.24) brightness(.44)}
+
+/* Véu: protege a coluna do texto e ancora a peça no chão escuro da página */
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:
+    linear-gradient(102deg, rgba(7,10,14,.96) 0%, rgba(7,10,14,.86) 34%,
+                    rgba(7,10,14,.46) 62%, rgba(7,10,14,.74) 100%),
+    linear-gradient(to top, var(--breu) 0%, rgba(7,10,14,.5) 26%, rgba(7,10,14,0) 58%)}
+
+/* Retícula de instrumento sobre a foto. É o que faz a imagem ler como captura
+   medida, e não como foto de banco de imagem. */
+.hero__reticula{position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(to right, rgba(150,172,190,.055) 0 1px, transparent 1px 88px),
+    repeating-linear-gradient(to bottom, rgba(150,172,190,.055) 0 1px, transparent 1px 88px);
+  mask-image:radial-gradient(120% 90% at 68% 44%, #000 20%, transparent 78%);
+  -webkit-mask-image:radial-gradient(120% 90% at 68% 44%, #000 20%, transparent 78%)}
+
+.hero__topo{width:100%;flex:1 1 auto;display:flex;align-items:center;
+  padding-bottom:clamp(var(--s5),7vh,var(--s6))}
+.hero__copy{display:flex;flex-direction:column;align-items:flex-start;gap:var(--s3);
+  max-width:min(56vw,620px)}
+.hero__copy .display{max-width:16ch}
+.hero__copy .corpo{max-width:48ch}
+.hero__botoes{display:flex;flex-wrap:wrap;gap:var(--s2);width:100%;margin-top:var(--s1)}
+.hero__botoes .btn{flex:1 1 auto;justify-content:center}
+@media (min-width:560px){.hero__botoes .btn{flex:0 0 auto}}
+@media (max-width:979px){.hero__copy{max-width:100%}}
+
+/* Etiqueta de captura, canto superior direito da foto */
+.hero__captura{position:absolute;top:clamp(84px,12vh,120px);right:clamp(20px,5vw,var(--s5));
+  z-index:1;display:none;flex-direction:column;gap:4px;text-align:right;pointer-events:none}
+.hero__captura p{margin:0;font-family:var(--f-dado);font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--mudo)}
+.hero__captura p:first-child{color:var(--ciano)}
+@media (min-width:980px){.hero__captura{display:flex}}
+
+/* --------------------------------------------------------------------------
+   O traço
+   Faixa de leitura ao vivo no pé do hero. O dado novo entra pela direita e
+   envelhece para a esquerda, como instrumento de verdade.
+   -------------------------------------------------------------------------- */
+.traco{position:relative;width:100%;height:clamp(170px,24vh,240px);
+  border-top:1px solid var(--fio-2);
+  background:linear-gradient(180deg,rgba(0,180,255,.04),rgba(0,0,0,0) 60%),var(--breu)}
+.traco__tela{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+.traco__hud{position:relative;height:100%;display:flex;align-items:stretch;
+  justify-content:space-between;gap:var(--s3);pointer-events:none}
+
+.hud__campo{display:flex;flex-direction:column;justify-content:center;gap:4px;
+  padding-block:var(--s2);padding-right:var(--s4);flex:0 0 auto;
+  background:linear-gradient(90deg,var(--breu) 58%,rgba(7,10,14,0))}
+.hud__rot{margin:0;font-family:var(--f-dado);font-size:9.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--mudo)}
+.hud__valor{margin:0;font-family:var(--f-dado);font-weight:400;
+  font-size:clamp(2.2rem,4.8vw,3.4rem);line-height:1;letter-spacing:-.035em;
+  color:var(--claro);font-variant-numeric:tabular-nums}
+.traco--centrado .hud__valor{color:var(--ciano)}
+.hud__estado{margin:0;font-family:var(--f-dado);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--mudo)}
+.traco--centrado .hud__estado{color:var(--ciano)}
+
+.hud__marcas{list-style:none;margin:0;padding:var(--s2) 0;display:flex;
+  align-items:flex-start;gap:clamp(var(--s3),3vw,var(--s5));flex:0 0 auto;
+  background:linear-gradient(270deg,rgba(7,10,14,.72) 40%,rgba(7,10,14,0))}
+.hud__marcas li{display:flex;flex-direction:column;gap:4px;text-align:right;padding-top:6px}
+.hud__marcas b{font-family:var(--f-dado);font-weight:500;font-size:1.3rem;
+  line-height:1;color:var(--claro);font-variant-numeric:tabular-nums}
+.hud__marcas span{font-family:var(--f-dado);font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mudo);max-width:14ch;line-height:1.45}
+@media (max-width:900px){.hud__marcas{display:none}}
+
+/* --------------------------------------------------------------------------
+   Espelho
+   -------------------------------------------------------------------------- */
+.dor{display:flex;flex-direction:column;gap:10px}
+.dor__titulo{font-family:var(--f-display);font-weight:400;font-size:1.16rem;
+  line-height:1.25;color:var(--claro);margin:0;letter-spacing:-.005em}
+.dor p{margin:0;color:var(--mudo);font-size:15.5px;line-height:1.6}
+
+.fecho{margin:clamp(var(--s4),5vw,var(--s6)) 0 0;padding-top:var(--s3);
+  border-top:1px solid var(--fio);position:relative}
+.fecho::before{content:"";position:absolute;left:0;top:-1px;width:56px;height:1px;background:var(--ciano)}
+.fecho p{margin:0;font-family:var(--f-display);font-weight:300;
+  font-size:clamp(1.4rem,3vw,2.1rem);line-height:1.2;letter-spacing:-.015em;
+  color:var(--claro);max-width:22ch}
+
+/* --------------------------------------------------------------------------
+   Método
+   -------------------------------------------------------------------------- */
+.metodo__grade{display:grid;gap:clamp(var(--s3),4vw,var(--s5))}
+.metodo__grade > *{min-width:0}
+@media (min-width:980px){.metodo__etapas{max-width:min(52vw,620px)}}
+
+
+.metodo__etapas{display:flex;flex-direction:column}
+
+.etapa{padding-block:clamp(var(--s4),5vw,var(--s5));border-top:1px solid var(--fio);
+  display:grid;gap:12px;transition:opacity var(--transicao)}
+.etapa:first-child{border-top:0}
+@media (min-width:980px){.etapa{opacity:.42}.etapa--ativa{opacity:1}}
+
+.etapa__papel{display:flex;align-items:center;gap:11px;font-family:var(--f-dado);
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mudo);margin:0}
+.etapa--ativa .etapa__papel{color:var(--ciano)}
+.etapa__papel::before{content:"";width:26px;height:1px;background:currentColor;flex:0 0 auto}
+
+.etapa__nome{font-family:var(--f-display);font-weight:300;
+  font-size:clamp(1.6rem,3.2vw,2.3rem);line-height:1.12;letter-spacing:-.018em;
+  color:var(--claro);margin:0}
+.etapa__frase{margin:0;color:var(--mudo);max-width:46ch;line-height:1.6}
+
+.etapa__itens{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:7px}
+.etapa__itens li{display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:start;
+  font-size:14.5px;color:var(--mudo);line-height:1.5}
+.etapa__itens li::before{content:"";width:11px;height:1px;background:var(--fio-2);margin-top:10px}
+
+/* --------------------------------------------------------------------------
+   Na prática · as fotos da obra
+   Foto de cliente real, produção da casa. Elas moram numa página escura, então
+   levam uma gradação leve para assentar, e voltam à cor cheia no foco.
+   -------------------------------------------------------------------------- */
+
+.obra{margin:0;display:flex;flex-direction:column;gap:var(--s2)}
+.obra picture{display:block;border-radius:var(--canto);overflow:hidden;
+  border:1px solid var(--fio);background:var(--breu-2);position:relative}
+.obra__quadro{position:relative}
+/* Cantoneiras nos quatro cantos, como mira de captura */
+.obra__quadro::before,.obra__quadro::after{content:"";position:absolute;
+  width:14px;height:14px;border-color:var(--ciano);border-style:solid;
+  pointer-events:none;z-index:2;opacity:.7}
+.obra__quadro::before{left:9px;top:9px;border-width:1px 0 0 1px}
+.obra__quadro::after{right:9px;bottom:9px;border-width:0 1px 1px 0}
+.obra__marca{position:absolute;left:9px;bottom:9px;z-index:2;margin:0;
+  display:flex;gap:10px;align-items:center;pointer-events:none;
+  font-family:var(--f-dado);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(230,237,243,.82);text-shadow:0 1px 6px rgba(0,0,0,.9)}
+.obra__marca i{font-style:normal;color:var(--ciano)}
+.obra img{display:block;width:100%;height:auto;
+  filter:saturate(.52) contrast(1.22) brightness(.72);
+  transition:filter 700ms ease,transform 900ms cubic-bezier(.22,.61,.36,1)}
+.obra:hover img,.obra:focus-within img{
+  filter:saturate(.86) contrast(1.08) brightness(.92);transform:scale(1.012)}
+
+.obra figcaption{display:flex;flex-direction:column;gap:5px;
+  padding-top:var(--s2);border-top:1px solid var(--fio);position:relative}
+.obra figcaption::before{content:"";position:absolute;left:0;top:-1px;
+  width:34px;height:1px;background:var(--ciano)}
+.obra__nome{margin:0;font-family:var(--f-dado);font-size:12px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--claro)}
+.obra__linha{margin:0;font-size:14.5px;line-height:1.55;color:var(--mudo);max-width:52ch}
+.obra__linha strong{color:var(--claro);font-weight:600}
+
+.obra--larga{margin-bottom:var(--s3)}
+.obra--larga .obra__nome{font-size:16px}
+.obra--larga .obra__linha{font-size:15.5px}
+
+.obras-dupla{display:grid;gap:var(--s2)}
+.obras-dupla > *{min-width:0}
+@media (min-width:760px){.obras-dupla{grid-template-columns:1fr 1fr;gap:var(--s3)}}
+
+/* --------------------------------------------------------------------------
+   Quem somos
+   -------------------------------------------------------------------------- */
+.socios{display:grid;gap:var(--s3)}
+.socios > *{min-width:0}
+@media (min-width:700px){.socios{grid-template-columns:1fr 1fr;gap:var(--s4)}}
+
+.socio{display:flex;flex-direction:column;gap:var(--s2)}
+.socio__retrato{aspect-ratio:4/5;border:1px solid var(--fio);border-radius:var(--canto);
+  background:var(--breu-2);display:grid;place-items:center;overflow:hidden}
+.socio__retrato img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)}
+.socio__retrato svg{width:56px;height:56px;opacity:.4}
+.socio__nome{font-family:var(--f-display);font-weight:300;font-size:1.5rem;
+  letter-spacing:-.01em;color:var(--claro);margin:0}
+.socio__papel{margin:0;font-family:var(--f-display);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ciano)}
+.socio p:last-child{margin:0;color:var(--mudo);font-size:15.5px;line-height:1.6}
+
+/* --------------------------------------------------------------------------
+   Perguntas
+   -------------------------------------------------------------------------- */
+.perguntas{border-top:1px solid var(--fio)}
+.pergunta{border-bottom:1px solid var(--fio)}
+.pergunta > summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;
+  gap:var(--s2);padding-block:var(--s3);font-family:var(--f-display);font-weight:400;
+  font-size:clamp(1.02rem,2vw,1.22rem);line-height:1.35;color:var(--claro);
+  transition:color var(--transicao)}
+.pergunta > summary::-webkit-details-marker{display:none}
+.pergunta > summary:hover{color:var(--ciano)}
+
+/* O sinal de aberto é um traço que gira, não uma seta */
+.pergunta__sinal{flex:0 0 auto;width:14px;height:14px;margin-top:7px;position:relative}
+.pergunta__sinal::before,.pergunta__sinal::after{content:"";position:absolute;
+  left:0;top:6px;width:14px;height:1px;background:var(--ciano);transition:transform var(--transicao)}
+.pergunta__sinal::after{transform:rotate(90deg)}
+.pergunta[open] .pergunta__sinal::after{transform:rotate(0deg)}
+
+.pergunta__resposta{margin:0;padding:0 0 var(--s3) calc(14px + var(--s2));
+  color:var(--mudo);max-width:62ch;line-height:1.65}
+
+/* --------------------------------------------------------------------------
+   Chamada final
+   -------------------------------------------------------------------------- */
+.chamada{background:var(--breu-2);border-top:1px solid var(--fio);
+  border-bottom:1px solid var(--fio);position:relative;overflow:hidden}
+.chamada__miolo{position:relative;display:flex;flex-direction:column;
+  gap:var(--s3);align-items:flex-start;max-width:34ch}
+
+/* --------------------------------------------------------------------------
+   Rodapé
+   -------------------------------------------------------------------------- */
+.rodape{padding-block:clamp(var(--s5),7vw,var(--s7))}
+.rodape__grade{display:grid;gap:var(--s4)}
+.rodape__grade > *{min-width:0}
+@media (min-width:820px){.rodape__grade{grid-template-columns:1.1fr 1fr;gap:var(--s6)}}
+
+.rodape__marca svg{width:112px;height:auto}
+.rodape__contatos{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.rodape__contatos a{display:inline-flex;align-items:center;min-height:44px;
+  color:var(--mudo);text-decoration:none;font-size:15px;transition:color var(--transicao)}
+.rodape__contatos a:hover{color:var(--ciano)}
+.rodape__legal{margin:var(--s4) 0 0;padding-top:var(--s3);border-top:1px solid var(--fio);
+  font-size:13px;color:var(--mudo);line-height:1.6;max-width:70ch}
+
+
+/* Índice de seção, como painel de instrumento. A numeração só existe porque a
+   página tem ordem de leitura de verdade, não como enfeite. */
+main{counter-reset:secao}
+.secao{counter-increment:secao}
+.cabeca-secao .etiqueta::before{content:"S-0" counter(secao) "  ";color:var(--fio-2)}
+
+/* --------------------------------------------------------------------------
+   Manifesto
+   O texto que explica o nome. Estava escrito e aprovado no brandbook e nunca
+   tinha ido para o ar.
+   -------------------------------------------------------------------------- */
+.manifesto{max-width:56ch}
+.manifesto p{margin:0 0 var(--s3);font-family:var(--f-display);font-weight:300;
+  font-size:clamp(1.2rem,2.3vw,1.7rem);line-height:1.38;letter-spacing:-.012em;
+  color:var(--mudo)}
+.manifesto p:first-of-type{color:var(--claro)}
+.manifesto p:last-of-type{margin-bottom:0;color:var(--ciano);font-size:clamp(1.05rem,1.9vw,1.35rem)}
+.manifesto em{font-style:normal;color:var(--claro)}
+
+/* --------------------------------------------------------------------------
+   O ecossistema
+   Três colunas de lista pura. Sem cartão e sem ícone de propósito: a densidade
+   é a mensagem. Responde o que a casa faz, para quem, e onde já rodou.
+   -------------------------------------------------------------------------- */
+.eco{display:grid;gap:var(--s4);margin-top:var(--s5)}
+.eco>*{min-width:0}
+@media (min-width:820px){.eco{grid-template-columns:repeat(3,1fr);gap:var(--s5)}}
+.eco h3{margin:0 0 var(--s2);padding-bottom:11px;border-bottom:1px solid var(--fio);
+  font-family:var(--f-dado);font-weight:400;font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--mudo)}
+.eco ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.eco li{font-size:15.5px;line-height:1.4;color:var(--claro)}
+.eco li span{color:var(--mudo);font-size:14px}
+
+/* --------------------------------------------------------------------------
+   Depoimento
+   Um só, com nome, cargo e empresa. Sem os três não vale nada.
+   -------------------------------------------------------------------------- */
+.depo{display:grid;gap:var(--s3);max-width:60ch}
+.depo blockquote{margin:0;font-family:var(--f-display);font-weight:300;
+  font-size:clamp(1.3rem,2.6vw,2rem);line-height:1.3;letter-spacing:-.015em;color:var(--claro)}
+.depo figcaption{display:flex;align-items:center;gap:var(--s2);
+  padding-top:var(--s3);border-top:1px solid var(--fio);position:relative}
+.depo figcaption::before{content:"";position:absolute;left:0;top:-1px;width:40px;height:1px;
+  background:var(--ciano)}
+.depo__retrato{width:48px;height:48px;border-radius:50%;object-fit:cover;
+  filter:grayscale(1) contrast(1.05);flex:0 0 auto}
+.depo__quem{display:grid;gap:2px}
+.depo__nome{margin:0;font-family:var(--f-display);font-size:15px;color:var(--claro)}
+.depo__cargo{margin:0;font-size:13.5px;color:var(--mudo)}
+
+/* --------------------------------------------------------------------------
+   O case, com profundidade
+   -------------------------------------------------------------------------- */
+.case{display:grid;gap:var(--s4);margin-top:var(--s5)}
+.case>*{min-width:0}
+@media (min-width:900px){.case{grid-template-columns:1fr 1fr;gap:var(--s5)}}
+.case__bloco{display:grid;gap:10px;align-content:start}
+.case__rot{margin:0;font-family:var(--f-dado);font-size:9.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ciano)}
+.case__bloco h3{margin:0;font-family:var(--f-display);font-weight:300;
+  font-size:clamp(1.2rem,2.2vw,1.55rem);line-height:1.2;letter-spacing:-.012em;color:var(--claro)}
+.case__bloco p{margin:0;font-size:15.5px;line-height:1.62;color:var(--mudo);max-width:52ch}
+
+.placar{display:grid;gap:1px;background:var(--fio);border:1px solid var(--fio);
+  border-radius:var(--canto);overflow:hidden;margin-top:var(--s4)}
+@media (min-width:640px){.placar{grid-template-columns:repeat(3,1fr)}}
+.placar div{background:var(--breu-2);padding:var(--s3);display:grid;gap:5px}
+.placar dt{font-family:var(--f-dado);font-size:9.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--mudo)}
+.placar dd{margin:0;font-family:var(--f-dado);font-weight:400;
+  font-size:clamp(1.9rem,3.6vw,2.6rem);line-height:1;letter-spacing:-.03em;color:var(--claro);
+  font-variant-numeric:tabular-nums}
+.placar dd small{display:block;font-size:13px;letter-spacing:0;color:var(--mudo);
+  margin-top:7px;font-family:var(--f-corpo);line-height:1.45}

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 176" width="780" height="176" role="img" aria-label="Moza">
+  <title>Moza wordmark minusculo, azul-tinta</title>
+  <g transform="translate(13,-44)">
+    <g fill="none" stroke="#123A5F" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M0,200 V105 a45,45 0 0 1 90,0 V200 M90,105 a45,45 0 0 1 90,0 V200"/>
+      <circle cx="298" cy="130" r="70"/>
+      <path d="M429,73 H543 L429,187 H543"/>
+      <circle cx="674" cy="130" r="70"/>
+      <path d="M744,60 V200"/>
+    </g>
+    <circle cx="298" cy="130" r="26" fill="#00B4FF"/>
+  </g>
+</svg>

@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moza · Kit de seções do site</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="public/assets/css/moza.css">
+<style>
+/* Estilos só do kit. Não vão para o site. */
+.kit-topo{border-bottom:1px solid var(--fio);padding:var(--s3) 0;position:sticky;top:0;
+  background:rgba(11,15,20,.86);backdrop-filter:blur(14px);z-index:20}
+.kit-topo__linha{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);flex-wrap:wrap}
+.kit-topo img{width:104px}
+
+.ficha{border:1px solid var(--fio);border-radius:var(--canto);margin-bottom:var(--s2);
+  background:var(--breu-2);overflow:hidden}
+.ficha__topo{display:flex;align-items:baseline;gap:var(--s2);flex-wrap:wrap;
+  padding:var(--s3) clamp(20px,3vw,var(--s4));border-bottom:1px solid var(--fio);
+  background:var(--breu-3)}
+.ficha__num{font-family:var(--f-display);font-size:11px;letter-spacing:.2em;color:var(--ciano);
+  border:1px solid var(--ciano-fraco);padding:4px 9px;border-radius:var(--canto)}
+.ficha__corpo{padding:clamp(20px,3vw,var(--s4));display:grid;gap:var(--s3)}
+@media (min-width:900px){.ficha__corpo{grid-template-columns:1.15fr .85fr;gap:var(--s4)}}
+
+.bloco{display:grid;gap:10px;align-content:start}
+.bloco + .bloco{margin-top:var(--s3)}
+.bloco__rot{font-family:var(--f-display);font-size:10px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ciano);margin:0}
+
+/* Copy final: mostrado no tipo real, dentro de um trecho recuado */
+.copy{border-left:1px solid var(--ciano);padding-left:var(--s2);display:grid;gap:10px}
+.copy p{margin:0}
+.copy .rotulo{font-family:var(--f-display);font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--mudo)}
+
+.spec{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.spec li{display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:start;
+  font-size:15px;color:var(--mudo);line-height:1.55}
+.spec li::before{content:"";width:14px;height:1px;background:var(--fio-2);margin-top:11px}
+
+.token-cor{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--s1)}
+.amostra{border:1px solid var(--fio);border-radius:var(--canto);overflow:hidden}
+.amostra__chapa{height:76px}
+.amostra__pe{padding:11px 13px;background:var(--breu-2)}
+.amostra__nome{font-family:var(--f-display);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--claro);margin:0}
+.amostra__hex{font-family:var(--f-display);font-size:11px;color:var(--mudo);margin:2px 0 0;letter-spacing:.08em}
+.amostra__uso{font-size:12px;color:var(--mudo);margin:6px 0 0;line-height:1.45}
+
+.linha-tipo{border-top:1px solid var(--fio);padding-top:var(--s2);margin-top:var(--s2)}
+.linha-tipo__meta{font-family:var(--f-display);font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--mudo);margin:0 0 10px}
+
+.controles{display:flex;gap:var(--s1);flex-wrap:wrap;justify-content:center;margin-top:var(--s3)}
+.ctrl{font-family:var(--f-display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  background:transparent;color:var(--mudo);border:1px solid var(--fio-2);border-radius:var(--canto);
+  padding:0 16px;min-height:44px;cursor:pointer;transition:all var(--transicao)}
+.ctrl:hover{border-color:var(--ciano);color:var(--ciano)}
+.ctrl[aria-pressed="true"]{background:var(--ciano);color:var(--breu);border-color:var(--ciano)}
+
+.aviso{border:1px solid var(--ciano-fraco);border-left:2px solid var(--ciano);
+  border-radius:var(--canto);padding:var(--s2) var(--s3);background:rgba(0,180,255,.045)}
+.aviso p{margin:0;font-size:15px;color:var(--claro);line-height:1.6}
+.aviso p + p{margin-top:9px;color:var(--mudo)}
+
+.checklist{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--fio);
+  border:1px solid var(--fio);border-radius:var(--canto);overflow:hidden}
+.checklist li{background:var(--breu-2);padding:15px var(--s3);display:grid;
+  grid-template-columns:auto 1fr;gap:14px;align-items:start;font-size:15px;line-height:1.55}
+.checklist li::before{content:"";width:8px;height:8px;border:1px solid var(--ciano);
+  border-radius:50%;margin-top:7px}
+.checklist strong{color:var(--claro);font-weight:600}
+.checklist span{color:var(--mudo)}
+
+.pendencia{color:var(--ciano);font-family:var(--f-display);font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="kit-topo">
+  <div class="envelope kit-topo__linha">
+    <img src="public/assets/img/logo/moza-wordmark.svg" alt="Moza">
+    <p class="etiqueta">Kit de seções do site · v1 · 02 de setembro de 2026</p>
+  </div>
+</header>
+
+<main id="conteudo">
+
+  <!-- ABERTURA -->
+  <section class="secao secao--curta">
+    <div class="envelope">
+      <p class="etiqueta etiqueta--ciano">O que é este documento</p>
+      <h1 class="display" style="margin-top:var(--s2);max-width:19ch">O site da Moza, seção por seção.</h1>
+      <p class="corpo corpo--grande" style="margin-top:var(--s3)">
+        Este kit fecha o desenho de <strong style="color:var(--claro);font-weight:500">mozabr.com.br</strong>
+        antes da montagem. Cada seção vem com objetivo, copy final, tratamento visual, interação e
+        regra de celular. O que estiver aqui é o que vai para o ar, e o que não estiver aqui não entra.
+      </p>
+      <p class="corpo" style="margin-top:var(--s2)">
+        Os tokens de cor, tipografia e espaçamento são os da seção 06 do
+        <code style="color:var(--claro)">brandbook-moza.md</code>. A estrutura vem de
+        <code style="color:var(--claro)">arquitetura-site.md</code>. O copy vem do
+        <code style="color:var(--claro)">kit-comunicacao.md</code>, com o nome trocado para Moza
+        e as cinco etapas de 31/08.
+      </p>
+    </div>
+  </section>
+
+  <div class="envelope"><hr class="filete"></div>
+
+  <!-- FUNDAMENTOS -->
+  <section class="secao">
+    <div class="envelope">
+      <div class="cabeca-secao">
+        <p class="etiqueta">Fundamentos</p>
+        <h2 class="titulo">A régua do sistema</h2>
+        <p class="corpo">Nada no site usa cor, peso ou espaçamento fora desta lista.</p>
+      </div>
+
+      <p class="bloco__rot">Cor</p>
+      <div class="token-cor" style="margin-top:var(--s2)">
+        <div class="amostra"><div class="amostra__chapa" style="background:#0B0F14;border-bottom:1px solid var(--fio)"></div>
+          <div class="amostra__pe"><p class="amostra__nome">Breu</p><p class="amostra__hex">#0B0F14</p>
+          <p class="amostra__uso">Fundo dominante. O chão de tudo.</p></div></div>
+        <div class="amostra"><div class="amostra__chapa" style="background:#00B4FF"></div>
+          <div class="amostra__pe"><p class="amostra__nome">Ciano</p><p class="amostra__hex">#00B4FF</p>
+          <p class="amostra__uso">Acento único. Teto de 5% da área. Um acento, nunca dois.</p></div></div>
+        <div class="amostra"><div class="amostra__chapa" style="background:#E6EDF3"></div>
+          <div class="amostra__pe"><p class="amostra__nome">Claro</p><p class="amostra__hex">#E6EDF3</p>
+          <p class="amostra__uso">Corpo e títulos sobre o escuro.</p></div></div>
+        <div class="amostra"><div class="amostra__chapa" style="background:#8B98A5"></div>
+          <div class="amostra__pe"><p class="amostra__nome">Mudo</p><p class="amostra__hex">#8B98A5</p>
+          <p class="amostra__uso">Legenda, metadado, texto de apoio.</p></div></div>
+        <div class="amostra"><div class="amostra__chapa" style="background:#123A5F"></div>
+          <div class="amostra__pe"><p class="amostra__nome">Azul-tinta</p><p class="amostra__hex">#123A5F</p>
+          <p class="amostra__uso">Só em peça clara. No site, aparece apenas no favicon e no cartão de compartilhamento.</p></div></div>
+      </div>
+
+      <div class="bloco" style="margin-top:var(--s5)">
+        <p class="bloco__rot">Tipografia</p>
+        <div class="linha-tipo">
+          <p class="linha-tipo__meta">Jost 300 · display · caixa e baixa · tracking -0,022em</p>
+          <p class="display">Sua marca não precisa de mais anúncio.</p>
+        </div>
+        <div class="linha-tipo">
+          <p class="linha-tipo__meta">Jost 300 · título de seção</p>
+          <p class="titulo">Cinco etapas, na ordem que funciona</p>
+        </div>
+        <div class="linha-tipo">
+          <p class="linha-tipo__meta">Jost 400 · etiqueta · caixa alta · tracking 0,22em</p>
+          <p class="etiqueta">Posicionamento primeiro. Performance sempre.</p>
+        </div>
+        <div class="linha-tipo">
+          <p class="linha-tipo__meta">Manrope 400 · corpo · 17px · entrelinha 1,65</p>
+          <p class="corpo corpo--claro">Antes de investir um real em anúncio, a Moza constrói com você quem a
+          sua marca é, como ela se posiciona e por quais canais ela cresce.</p>
+        </div>
+      </div>
+
+      <div class="aviso" style="margin-top:var(--s5)">
+        <p><strong style="font-weight:600">A regra que segura a estética.</strong> Caixa alta só em
+        etiqueta e sigla, nunca para dar ênfase. O contraste entre o título grande em caixa e baixa
+        com tracking negativo e a etiqueta em caixa alta com tracking largo é o que dá a leitura de
+        planta técnica, que é a lógica de compasso e régua da wordmark.</p>
+        <p>Fontes servidas do próprio domínio, variáveis, 51 KB para as duas famílias inteiras.
+        Sem chamada ao Google, sem framework, sem etapa de build.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="envelope"><hr class="filete"></div>
+
+  <!-- ELEMENTO ASSINATURA -->
+  <section class="secao" id="assinatura">
+    <div class="envelope">
+      <div class="cabeca-secao">
+        <p class="etiqueta">Elemento assinatura</p>
+        <h2 class="titulo">O aparelho de centragem</h2>
+        <p class="corpo corpo--grande">A única coisa do site que ninguém consegue copiar sem copiar a
+        marca junto. É a roda do manifesto, desenhada em compasso e régua: um centro, um raio,
+        terminais retos. Ela nasce bamba. O apalpador encosta no aro e lê o desvio enquanto ela gira.</p>
+      </div>
+
+      <div class="roda" data-roda>
+        <div class="roda__leitura">
+          <p class="etiqueta">Desvio do aro</p>
+          <p class="roda__valor dado"><span data-roda-valor>0,00</span></p>
+          <p class="roda__veredito dado" data-roda-veredito>bamba</p>
+        </div>
+      </div>
+      <p class="roda__dica">Arraste a roda para girar</p>
+
+      <div class="controles">
+        <button class="ctrl" data-etapa="0" aria-pressed="true">Antes do diagnóstico</button>
+        <button class="ctrl" data-etapa="1" aria-pressed="false">+ Posicionamento</button>
+        <button class="ctrl" data-etapa="2" aria-pressed="false">+ Conteúdo</button>
+        <button class="ctrl" data-etapa="3" aria-pressed="false">+ Venda</button>
+        <button class="ctrl" data-etapa="4" aria-pressed="false">+ Jornada</button>
+      </div>
+
+      <div class="aviso" style="margin-top:var(--s5)">
+        <p><strong style="font-weight:600">Por que ela resolve o conflito das etapas.</strong>
+        O Diagnóstico não é a etapa 1 de cinco: ele é o cubo, o centro que se mede antes de tudo.
+        Posicionamento, Conteúdo, Venda e Jornada são os quatro raios que se prendem nele. A lista
+        nova do Kauan e os quatro raios do brandbook passam a dizer a mesma coisa, sem contradição.</p>
+        <p>Ela também não cai em nenhuma proibição da seção 06: não é gráfico de constelação, não é
+        blob cromado, não é foto de banco de imagem automotivo. É a geometria do cubo que já está
+        nos posts fixados, agora com movimento e leitura.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="envelope"><hr class="filete"></div>
+
+  <!-- AS SEÇÕES -->
+  <section class="secao">
+    <div class="envelope">
+      <div class="cabeca-secao">
+        <p class="etiqueta">As oito seções</p>
+        <h2 class="titulo">Uma página só, com âncoras</h2>
+        <p class="corpo">Navegação enxuta: Método, Na prática, Quem somos, FAQ e o botão de WhatsApp.
+        Sem Planos e sem Portfólio, porque a venda apresenta um plano só e ainda não existe case autorizado.</p>
+      </div>
+
+      <!-- 01 HERO -->
+      <article class="ficha">
+        <div class="ficha__topo">
+          <span class="ficha__num">01</span>
+          <h3 class="subtitulo">Hero</h3>
+          <p class="etiqueta" style="margin-left:auto">Âncora: topo</p>
+        </div>
+        <div class="ficha__corpo">
+          <div>
+            <div class="bloco"><p class="bloco__rot">Objetivo</p>
+              <p class="corpo">Dizer em uma frase o que a Moza faz de diferente, e provar o argumento
+              com o próprio visual antes de qualquer texto de venda.</p></div>
+            <div class="bloco"><p class="bloco__rot">Copy final</p>
+              <div class="copy">
+                <p class="rotulo">Etiqueta</p>
+                <p class="etiqueta">Posicionamento primeiro. Performance sempre.</p>
+                <p class="rotulo" style="margin-top:8px">Headline</p>
+                <p class="subtitulo">Sua marca não precisa de mais anúncio. Precisa do centro que faz o anúncio valer a pena.</p>
+                <p class="rotulo" style="margin-top:8px">Subtítulo</p>
+                <p class="corpo">Antes de investir um real em anúncio, a Moza constrói com você quem a sua
+                marca é, como ela se posiciona e por quais canais ela cresce. Depois opera a performance:
+                estratégia, conteúdo e tráfego na ordem certa, com acompanhamento real.</p>
+                <p class="rotulo" style="margin-top:8px">Prova de rodapé</p>
+                <p class="corpo">Método aplicado em negócios reais, de autônomos a startups.</p>
+                <p class="rotulo" style="margin-top:8px">Botões</p>
+                <p class="corpo">Falar com especialista (primário, WhatsApp) e Conhecer o método (secundário, âncora).</p>
+              </div></div>
+          </div>
+          <div>
+            <div class="bloco"><p class="bloco__rot">Visual</p>
+              <ul class="spec">
+                <li><span>O aparelho de centragem à direita, no estado bamba, com a leitura de desvio ao vivo.</span></li>
+                <li><span>Régua vertical de escala na borda esquerda, só em telas acima de 1100px.</span></li>
+                <li><span>Nenhuma foto. A foto dos sócios entra na seção 05, depois da sessão.</span></li>
+              </ul></div>
+            <div class="bloco"><p class="bloco__rot">Interação</p>
+              <ul class="spec">
+                <li><span>Arrastar a roda com o dedo ou o mouse para girar, com inércia.</span></li>
+                <li><span>Entrada da página: headline em uma revelação só, sem cascata de efeitos.</span></li>
+              </ul></div>
+            <div class="bloco"><p class="bloco__rot">Celular</p>
+              <ul class="spec">
+                <li><span>Roda abaixo do texto, largura total, leitura de desvio embaixo dela.</span></li>
+                <li><span>Botão primário em largura total. O secundário vira link com seta.</span></li>
+                <li><span>A roda não captura o gesto de rolagem (touch-action: pan-y).</span></li>
+              </ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 02 ESPELHO -->
+      <article class="ficha">
+        <div class="ficha__topo">
+          <span class="ficha__num">02</span>
+          <h3 class="subtitulo">O espelho</h3>
+          <p class="etiqueta" style="margin-left:auto">Sem âncora</p>
+        </div>
+        <div class="ficha__corpo">
+          <div>
+            <div class="bloco"><p class="bloco__rot">Objetivo</p>
+              <p class="corpo">O visitante se reconhecer antes de ver a solução. Tom de diagnóstico,
+              sem atacar concorrente com nome e sem arrogância.</p></div>
+            <div class="bloco"><p class="bloco__rot">Copy final</p>
+              <div class="copy">
+                <p class="rotulo">Frase do inimigo, abre a seção</p>
+                <p class="subtitulo">Enquanto a maioria aperta botão, a Moza constrói o centro que faz o botão valer a pena.</p>
+                <p class="rotulo" style="margin-top:8px">Três dores, em cartões</p>
+                <p class="corpo"><strong style="color:var(--claro);font-weight:500">O anúncio não paga o próprio custo.</strong>
+                Você sobe campanha, o clique vem, o cliente não. O problema quase nunca está no criativo:
+                está no que a pessoa encontra depois do clique.</p>
+                <p class="corpo"><strong style="color:var(--claro);font-weight:500">O perfil não sustenta o preço que você cobra.</strong>
+                Quem pesquisa antes de comprar chega no seu Instagram e não encontra motivo para pagar
+                mais. Sem posicionamento, preço vira discussão.</p>
+                <p class="corpo"><strong style="color:var(--claro);font-weight:500">A agência entrega relatório e some.</strong>
+                No fim do mês chega um PDF cheio de gráfico, e você continua sem saber em que etapa
+                está nem o que vem depois.</p>
+                <p class="rotulo" style="margin-top:8px">Fecho</p>
+                <p class="corpo">Sem centro, a roda fica bamba.</p>
+              </div></div>
+          </div>
+          <div>
+            <div class="bloco"><p class="bloco__rot">Visual</p>
+              <ul class="spec">
+                <li><span>Três cartões em superfície elevada, um degrau acima do fundo, com fio de 1px.</span></li>
+                <li><span>Zero ícone de banco de imagem. O que separa os cartões é o fio e o espaço.</span></li>
+                <li><span>O fecho isolado, em corpo maior, com o filete ciano curto acima.</span></li>
+              </ul></div>
+            <div class="bloco"><p class="bloco__rot">Interação</p>
+              <ul class="spec">
+                <li><span>Revelação ao entrar na tela, os três com 90ms de defasagem entre eles.</span></li>
+                <li><span>Hover no cartão: o fio passa de 8,5% para 17% de opacidade. Nada além disso.</span></li>
+              </ul></div>
+            <div class="bloco"><p class="bloco__rot">Celular</p>
+              <ul class="spec">
+                <li><span>Cartões empilhados, largura total, espaço de 16px entre eles.</span></li>
+              </ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 03 METODO -->
+      <article class="ficha">
+        <div class="ficha__topo">
+          <span class="ficha__num">03</span>
+          <h3 class="subtitulo">O método</h3>
+          <p class="etiqueta" style="margin-left:auto">Âncora: #metodo</p>
+        </div>
+        <div class="ficha__corpo">
+          <div>
+            <div class="bloco"><p class="bloco__rot">Objetivo</p>
+              <p class="corpo">Mostrar que existe processo com dono, sem entregar o mapa de graça.
+              É a seção principal da página e onde o aparelho de centragem paga o próprio custo.</p></div>
+            <div class="bloco"><p class="bloco__rot">Copy final</p>
+              <div class="copy">
+                <p class="rotulo">Título</p>
+                <p class="subtitulo">Cinco etapas, na ordem que funciona.</p>
+                <p class="rotulo" style="margin-top:8px">Introdução</p>
+                <p class="corpo">O Diagnóstico é o centro: é onde a gente mede onde a sua marca está antes
+                de qualquer investimento. As outras quatro são os raios que se prendem nele. A profundidade
+                de cada uma depende do ponto de partida, definido no próprio diagnóstico.</p>
+                <p class="rotulo" style="margin-top:8px">Centro · Diagnóstico</p>
+                <p class="corpo">Onde a sua marca está hoje, medido antes de qualquer investimento.
+                <br><span style="color:var(--mudo)">Mapa mental do negócio ao vivo. Leitura dos canais que
+                você já tem. O ponto de partida escrito, sem achismo.</span></p>
+                <p class="rotulo" style="margin-top:8px">Raio 1 · Posicionamento</p>
+                <p class="corpo">Como a sua marca aparece quando alguém pesquisa antes de comprar.
+                <br><span style="color:var(--mudo)">Mensagem e promessa definidas. Identidade e vitrine
+                digital. O motivo de escolher você, escrito.</span></p>
+                <p class="rotulo" style="margin-top:8px">Raio 2 · Conteúdo que atrai</p>
+                <p class="corpo">Como chega gente nova todo dia, com conteúdo e alcance.
+                <br><span style="color:var(--mudo)">Linha editorial por objetivo. Roteiro e pauta de vídeo.
+                Publicação com ritmo, não por surto.</span></p>
+                <p class="rotulo" style="margin-top:8px">Raio 3 · Venda</p>
+                <p class="corpo">Como interesse vira cliente, com estrutura e oferta certas.
+                <br><span style="color:var(--mudo)">Oferta e argumento de venda. Caminho do WhatsApp ao
+                fechamento. Tráfego pago ligado ao que já está de pé.</span></p>
+                <p class="rotulo" style="margin-top:8px">Raio 4 · Jornada do consumidor</p>
+                <p class="corpo">Como o resultado se sustenta, lido e ajustado todo mês.
+                <br><span style="color:var(--mudo)">Leitura mensal dos números. Ajuste do que não
+                performou. Você sabe em que etapa está e o que vem depois.</span></p>
+                <p class="rotulo" style="margin-top:8px">Fecho</p>
+                <p class="corpo">Posicionamento primeiro, performance junto. Anúncio sem base não é
+                investimento, é custo.</p>
+              </div></div>
+          </div>
+          <div>
+            <div class="bloco"><p class="bloco__rot">Visual</p>
+              <ul class="spec">
+                <li><span>Duas colunas: as etapas à esquerda, o aparelho de centragem fixo à direita.</span></li>
+                <li><span>Marcador estrutural é <strong style="color:var(--claro)">Centro</strong> e
+                <strong style="color:var(--claro)">Raio 1 a 4</strong>, nunca 01 a 05. O nome do marcador
+                carrega a informação de que o Diagnóstico é de outra natureza.</span></li>
+                <li><span>Nenhum prazo em lugar nenhum da seção.</span></li>
+              </ul></div>
+            <div class="bloco"><p class="bloco__rot">Interação</p>
+              <ul class="spec">
+                <li><span>A roda acompanha a rolagem. Cada etapa que entra na tela tensiona um raio.</span></li>
+                <li><span>O desvio cai a cada etapa e o veredito muda: bamba, desalinhada, girando torto,
+                quase no eixo, no centro.</span></li>
+                <li><span>Ao chegar em Jornada, a roda gira limpa e o aro passa a ciano. É o único momento
+                da página em que o ciano cresce de área, e é o clímax do argumento.</span></li>
+              </ul></div>
+            <div class="bloco"><p class="bloco__rot">Celular</p>
+              <ul class="spec">
+                <li><span>A roda fica presa no topo, em 40% da altura da tela, e as etapas rolam por baixo.</span></li>
+                <li><span>Se a altura da tela for menor que 640px, a roda sai e cada etapa mostra só o
+                seu marcador. O argumento não pode depender do movimento.</span></li>
+              </ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 04 NA PRATICA -->
+      <article class="ficha">
+        <div class="ficha__topo">
+          <span class="ficha__num">04</span>
+          <h3 class="subtitulo">Na prática</h3>
+          <p class="etiqueta" style="margin-left:auto">Âncora: #na-pratica</p>
+        </div>
+        <div class="ficha__corpo">
+          <div>
+            <div class="bloco"><p class="bloco__rot">Objetivo</p>
+              <p class="corpo">Prova tangível sem case publicado. Substitui o portfólio até existirem
+              cases autorizados.</p></div>
+            <div class="bloco"><p class="bloco__rot">Copy final</p>
+              <div class="copy">
+                <p class="rotulo">Título</p>
+                <p class="subtitulo">O material de trabalho, não a promessa.</p>
+                <p class="rotulo" style="margin-top:8px">Linha de apoio</p>
+                <p class="corpo">Isso é o que um cliente da Moza recebe. Os dados dos clientes estão
+                cobertos, o formato é real.</p>
+                <p class="rotulo" style="margin-top:8px">Três artefatos</p>
+                <p class="corpo">Mapa mental do diagnóstico. Deck de estratégia. Painel de acompanhamento.</p>
+              </div></div>
+          </div>
+          <div>
+            <div class="bloco"><p class="bloco__rot">Visual</p>
+              <ul class="spec">
+                <li><span>Três capturas reais dos artefatos, com desfoque nos dados do cliente.</span></li>
+                <li><span>Moldura de 1px no fio da marca. Sem sombra, sem perspectiva, sem mockup de notebook.</span></li>
+              </ul></div>
+            <div class="bloco"><p class="bloco__rot">Interação</p>
+              <ul class="spec">
+                <li><span>Clique abre a captura em tamanho maior, com fundo escurecido e fechamento por Esc.</span></li>
+              </ul></div>
+            <div class="bloco"><p class="bloco__rot">Pendência</p>
+              <ul class="spec">
+                <li><span class="pendencia">Definir</span><span>As três capturas anonimizadas precisam ser
+                geradas e aprovadas. Até lá a seção não sobe.</span></li>
+              </ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 05 QUEM SOMOS -->
+      <article class="ficha">
+        <div class="ficha__topo">
+          <span class="ficha__num">05</span>
+          <h3 class="subtitulo">Quem somos</h3>
+          <p class="etiqueta" style="margin-left:auto">Âncora: #quem-somos</p>
+        </div>
+        <div class="ficha__corpo">
+          <div>
+            <div class="bloco"><p class="bloco__rot">Objetivo</p>
+              <p class="corpo">Régua do parecer maior a favor: dois sócios com rosto e território claro
+              vendem mais confiança que equipe genérica.</p></div>
+            <div class="bloco"><p class="bloco__rot">Copy final</p>
+              <div class="copy">
+                <p class="rotulo">Título</p>
+                <p class="subtitulo">Dois sócios, território claro.</p>
+                <p class="rotulo" style="margin-top:8px">Kauan</p>
+                <p class="corpo">Comercial. Quem te atende do diagnóstico ao fechamento.</p>
+                <p class="rotulo" style="margin-top:8px">Murillo</p>
+                <p class="corpo">Operacional. Quem constrói posicionamento, conteúdo e performance.</p>
+                <p class="rotulo" style="margin-top:8px">História, uma linha</p>
+                <p class="corpo">A casa nasceu em 2026 em Santo André, São Paulo, e atende o Brasil inteiro
+                de forma remota. Antes, Next Assessoria.</p>
+              </div></div>
+          </div>
+          <div>
+            <div class="bloco"><p class="bloco__rot">Visual</p>
+              <ul class="spec">
+                <li><span>Foto real de cada sócio, preto e branco com o ciano só no fio da moldura.</span></li>
+                <li><span>Sem cargo inflado. Nada de fundador visionário, nada de nosso time.</span></li>
+              </ul></div>
+            <div class="bloco"><p class="bloco__rot">Pendência</p>
+              <ul class="spec">
+                <li><span class="pendencia">Definir</span><span>Sessão de fotos dos dois sócios. Sem ela,
+                a seção sobe com o retrato substituído pelo monograma M e o texto intacto, e não trava o lançamento.</span></li>
+              </ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 06 FAQ -->
+      <article class="ficha">
+        <div class="ficha__topo">
+          <span class="ficha__num">06</span>
+          <h3 class="subtitulo">Perguntas</h3>
+          <p class="etiqueta" style="margin-left:auto">Âncora: #faq</p>
+        </div>
+        <div class="ficha__corpo">
+          <div>
+            <div class="bloco"><p class="bloco__rot">Objetivo</p>
+              <p class="corpo">Responder a objeção real antes que ela vire motivo de não chamar no
+              WhatsApp. Respostas curtas e honestas, sem preço e sem prazo.</p></div>
+            <div class="bloco"><p class="bloco__rot">Copy final</p>
+              <div class="copy">
+                <p class="corpo"><strong style="color:var(--claro);font-weight:500">Vocês fazem tráfego pago?</strong>
+                Fazemos, e é justamente por isso que começamos pelo posicionamento. Anúncio sem base vira custo.</p>
+                <p class="corpo"><strong style="color:var(--claro);font-weight:500">Quanto custa?</strong>
+                Cada negócio recebe um desenho próprio depois do diagnóstico. Sem tabela genérica, porque
+                o problema nunca é genérico.</p>
+                <p class="corpo"><strong style="color:var(--claro);font-weight:500">Em quanto tempo vejo resultado?</strong>
+                O prazo é definido no diagnóstico, junto com você. Desconfie de quem promete prazo sem
+                conhecer o seu negócio.</p>
+                <p class="corpo"><strong style="color:var(--claro);font-weight:500">Atendem o meu segmento?</strong>
+                Atendemos negócios de vários segmentos, de autônomos a startups. O que importa é o encaixe
+                com o método.</p>
+                <p class="corpo"><strong style="color:var(--claro);font-weight:500">Preciso aparecer em vídeo?</strong>
+                O método define isso com você. Existe caminho para quem aparece e para quem não aparece.</p>
+                <p class="corpo"><strong style="color:var(--claro);font-weight:500">Como começa?</strong>
+                Uma conversa no WhatsApp, depois um diagnóstico do seu negócio. Você entende exatamente
+                onde está antes de decidir qualquer coisa.</p>
+              </div></div>
+          </div>
+          <div>
+            <div class="bloco"><p class="bloco__rot">Visual</p>
+              <ul class="spec">
+                <li><span>Lista com fio de 1px entre itens. Sem cartão, sem caixa, sem fundo próprio.</span></li>
+                <li><span>Pergunta em Jost, resposta em Manrope. O contraste de família marca a hierarquia.</span></li>
+              </ul></div>
+            <div class="bloco"><p class="bloco__rot">Interação</p>
+              <ul class="spec">
+                <li><span>Sanfona nativa com details e summary. Funciona sem JavaScript e o teclado navega sozinho.</span></li>
+                <li><span>Abre uma por vez. O sinal de aberto é um traço que gira 90 graus, não uma seta.</span></li>
+              </ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 07 CTA -->
+      <article class="ficha">
+        <div class="ficha__topo">
+          <span class="ficha__num">07</span>
+          <h3 class="subtitulo">Chamada final</h3>
+          <p class="etiqueta" style="margin-left:auto">Sem âncora</p>
+        </div>
+        <div class="ficha__corpo">
+          <div>
+            <div class="bloco"><p class="bloco__rot">Copy final</p>
+              <div class="copy">
+                <p class="rotulo">Headline</p>
+                <p class="subtitulo">Vamos entender onde a sua marca está?</p>
+                <p class="rotulo" style="margin-top:8px">Linha de apoio</p>
+                <p class="corpo">Uma conversa no WhatsApp, depois um diagnóstico. Você entende exatamente
+                onde está antes de decidir qualquer coisa.</p>
+                <p class="rotulo" style="margin-top:8px">Botão</p>
+                <p class="corpo">Falar com especialista.</p>
+              </div></div>
+          </div>
+          <div>
+            <div class="bloco"><p class="bloco__rot">Visual</p>
+              <ul class="spec">
+                <li><span>Faixa em superfície elevada de borda a borda, com o cubo em traço muito
+                apagado atrás, sem virar textura.</span></li>
+                <li><span>Nenhuma urgência falsa. Sem últimas vagas, sem contador.</span></li>
+              </ul></div>
+            <div class="bloco"><p class="bloco__rot">Interação</p>
+              <ul class="spec">
+                <li><span>Todos os links de WhatsApp abrem com a mensagem já escrita: Quero entender o
+                método da Moza.</span></li>
+              </ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 08 RODAPE -->
+      <article class="ficha">
+        <div class="ficha__topo">
+          <span class="ficha__num">08</span>
+          <h3 class="subtitulo">Rodapé</h3>
+          <p class="etiqueta" style="margin-left:auto">Fim da página</p>
+        </div>
+        <div class="ficha__corpo">
+          <div>
+            <div class="bloco"><p class="bloco__rot">Copy final</p>
+              <div class="copy">
+                <p class="rotulo">Assinatura</p>
+                <p class="etiqueta">Posicionamento primeiro. Performance sempre.</p>
+                <p class="rotulo" style="margin-top:8px">Boilerplate</p>
+                <p class="corpo">A Moza Assessoria é uma agência de posicionamento de marca fundada em
+                2026 em Santo André, SP, com atendimento 100% remoto em todo o Brasil. Constrói
+                posicionamento, conteúdo e performance para negócios que querem crescer no digital com
+                método e acompanhamento real.</p>
+                <p class="rotulo" style="margin-top:8px">Dados</p>
+                <p class="corpo">CNPJ 65.180.563/0001-54. Santo André, SP. Atendimento em todo o Brasil,
+                100% remoto. contato@mozabr.com.br. WhatsApp +55 11 94877-9809. Instagram @mozabr.</p>
+              </div></div>
+          </div>
+          <div>
+            <div class="bloco"><p class="bloco__rot">Visual</p>
+              <ul class="spec">
+                <li><span>Wordmark completa, em tamanho contido. É o único lugar da página com a marca por extenso além do topo.</span></li>
+                <li><span>Filete ciano de seção acima do rodapé, fechando a régua da página.</span></li>
+              </ul></div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="envelope"><hr class="filete"></div>
+
+  <!-- CONFORMIDADE -->
+  <section class="secao">
+    <div class="envelope">
+      <div class="cabeca-secao">
+        <p class="etiqueta">Critério de pronto</p>
+        <h2 class="titulo">A régua de conformidade</h2>
+        <p class="corpo">Passa item a item antes de publicar. Reprovou em um, não sobe.</p>
+      </div>
+      <ul class="checklist">
+        <li><span><strong>Copy aprovado seção a seção</strong> pelos dois sócios, com o nome Moza em tudo.</span></li>
+        <li><span><strong>Zero preço, zero prazo</strong> e nenhum comparativo de plano em qualquer ponto da página.</span></li>
+        <li><span><strong>Zero travessão</strong> e nenhuma exclamação. Caixa alta só em etiqueta e sigla.</span></li>
+        <li><span><strong>Nenhuma palavra banida:</strong> garantido, explosivo, revolucionário, fórmula, segredo, acelerar, turbinar, o melhor do mercado, nosso time, nossa equipe.</span></li>
+        <li><span><strong>Ciano dentro do teto de 5%</strong> da área em toda dobra, medido de verdade e não a olho.</span></li>
+        <li><span><strong>QA em celular real,</strong> iPhone e Android, entre 320 e 430px, sem rolagem horizontal em nenhuma seção.</span></li>
+        <li><span><strong>Todo link de WhatsApp</strong> com a mensagem já preenchida.</span></li>
+        <li><span><strong>Navegação por teclado</strong> completa, com foco visível em todo elemento clicável.</span></li>
+        <li><span><strong>prefers-reduced-motion respeitado:</strong> a roda para e o argumento continua legível.</span></li>
+        <li><span><strong>SEO e Open Graph:</strong> title, description, cartão de compartilhamento, favicon nas duas versões e sitemap.</span></li>
+        <li><span><strong>Redirect 301</strong> do domínio antigo apontando para mozabr.com.br, mantido por pelo menos 1 ano.</span></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="secao secao--curta" style="border-top:1px solid var(--fio)">
+  <div class="envelope">
+    <img src="public/assets/img/logo/moza-wordmark.svg" alt="Moza" style="width:120px">
+    <p class="etiqueta" style="margin-top:var(--s2)">Posicionamento primeiro. Performance sempre.</p>
+    <p class="corpo" style="margin-top:var(--s2);font-size:14px">Documento interno de trabalho.
+    Fonte dos tokens: brandbook-moza.md, seção 06. Fonte da estrutura: arquitetura-site.md.</p>
+  </div>
+</footer>
+
+<script src="public/assets/js/roda.js"></script>
+<script>
+(function(){
+  var alvo = document.querySelector('[data-roda]');
+  var roda = new RodaMoza(alvo, { desvio: 1 });
+  var botoes = document.querySelectorAll('.ctrl');
+  botoes.forEach(function(b){
+    b.addEventListener('click', function(){
+      var n = parseInt(b.dataset.etapa, 10);
+      roda.paraDesvio(1 - n / 4);
+      botoes.forEach(function(o){ o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+    });
+  });
+})();
+</script>
+</body>
+</html>
