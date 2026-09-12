@@ -495,3 +495,20 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
   padding:5px 11px;border-radius:999px;color:#fff;
   background:color-mix(in srgb,var(--tomAba) 88%,black);
   box-shadow:0 2px 10px rgba(0,20,45,.3)}
+
+/* --------------------------------------------------------------------------
+   A roda se montando
+   Preenche o objeto travado do método com o próprio assunto da seção: o centro
+   existe primeiro, e cada etapa prende um raio nele. Não é enfeite, é o
+   argumento desenhado.
+   -------------------------------------------------------------------------- */
+.rodaMonta{width:min(58%,260px);height:auto;margin-bottom:var(--s4);
+  color:var(--claro);display:block}
+.rodaMonta circle,.rodaMonta line{transition:opacity 700ms ease,stroke-width 700ms ease}
+
+/* O nome da etapa não pode ser cortado. "Posicionamento" tem 14 caracteres e
+   o quadro do objeto travado tem overflow escondido: max-width apertado aqui
+   engolia a palavra. */
+.pino__marco{max-width:100%}
+.pino__frase{max-width:none;overflow-wrap:break-word;hyphens:none}
+.pino__marco .pino__frase{font-size:clamp(1.6rem,3.4vw,2.7rem)}
