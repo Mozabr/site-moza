@@ -83,19 +83,19 @@
 /* --------------------------------------------------------------------------
    O espelho
    -------------------------------------------------------------------------- */
-.dores{display:grid;gap:var(--s4);margin-top:clamp(var(--s5),8vw,var(--s6))}
+.dores{display:grid;gap:var(--s4);margin-top:clamp(var(--s4),5vw,var(--s5))}
 .dores>*{min-width:0}
 @media (min-width:820px){.dores{grid-template-columns:repeat(3,1fr);gap:var(--s5)}}
 .dor{display:flex;flex-direction:column;gap:12px;padding-top:var(--s3);
   border-top:1px solid var(--fio-2)}
 .dor h3{margin:0;font-family:var(--f-display);font-weight:300;font-size:1.32rem;
   line-height:1.18;letter-spacing:-.016em;color:var(--claro)}
-.dor p{margin:0;color:var(--mudo);font-size:15.5px;line-height:1.6}
+.dor p{margin:0;color:var(--mudo);font-size:17px;line-height:1.55}
 
 /* --------------------------------------------------------------------------
    O método · cada etapa é um tempo
    -------------------------------------------------------------------------- */
-.etapas{display:grid;gap:clamp(var(--s5),9vw,var(--s7));margin-top:clamp(var(--s5),9vw,var(--s6))}
+.etapas{display:grid;gap:clamp(var(--s4),6vw,var(--s6));margin-top:clamp(var(--s4),5vw,var(--s5))}
 .etapa{display:grid;gap:var(--s3);max-width:760px;margin-inline:auto;text-align:center;
   justify-items:center}
 .etapa__papel{margin:0;font-family:var(--f-display);font-size:11.5px;letter-spacing:.24em;
@@ -103,16 +103,16 @@
 .etapa__nome{margin:0;font-family:var(--f-display);font-weight:300;
   font-size:clamp(1.9rem,4.4vw,3rem);line-height:1.05;letter-spacing:-.028em;color:var(--claro)}
 .etapa__frase{margin:0;color:var(--mudo);max-width:46ch;
-  font-size:clamp(1rem,1.5vw,1.14rem);line-height:1.55}
+  font-size:clamp(1.12rem,1.7vw,1.3rem);line-height:1.48}
 .etapa__itens{list-style:none;margin:var(--s1) 0 0;padding:0;display:flex;flex-wrap:wrap;
   gap:10px var(--s2);justify-content:center;max-width:56ch}
-.etapa__itens li{font-family:var(--f-display);font-size:13px;letter-spacing:.02em;
+.etapa__itens li{font-family:var(--f-display);font-size:14.5px;letter-spacing:.02em;
   color:var(--mudo);padding:7px 15px;border:1px solid var(--fio);border-radius:999px}
 
 /* --------------------------------------------------------------------------
    A prova · aqui entram o número e as fotos
    -------------------------------------------------------------------------- */
-.placar{display:grid;gap:var(--s4);margin-top:clamp(var(--s5),8vw,var(--s6));
+.placar{display:grid;gap:var(--s4);margin-top:clamp(var(--s4),5vw,var(--s5));
   text-align:center;justify-items:center}
 @media (min-width:760px){.placar{grid-template-columns:repeat(3,1fr);gap:var(--s5)}}
 .placar div{display:grid;gap:12px;justify-items:center}
@@ -122,7 +122,7 @@
 .placar dd small{display:block;margin-top:var(--s2);font-size:14px;color:var(--mudo);
   line-height:1.5;max-width:24ch;font-family:var(--f-corpo);letter-spacing:0}
 
-.obras{display:grid;gap:var(--s2);margin-top:clamp(var(--s5),8vw,var(--s6))}
+.obras{display:grid;gap:var(--s2);margin-top:clamp(var(--s4),5vw,var(--s5))}
 .obras>*{min-width:0}
 @media (min-width:820px){
   .obras{grid-template-columns:1.35fr 1fr;gap:var(--s3)}
@@ -137,9 +137,9 @@
 .obra:hover img{filter:saturate(.92) contrast(1.04) brightness(.96);transform:scale(1.015)}
 .obra figcaption{display:grid;gap:4px}
 .obra__nome{margin:0;font-family:var(--f-display);font-size:14.5px;color:var(--claro)}
-.obra__linha{margin:0;font-size:14px;color:var(--mudo);line-height:1.5}
+.obra__linha{margin:0;font-size:15.5px;color:var(--mudo);line-height:1.45}
 
-.caso{display:grid;gap:var(--s4);margin-top:clamp(var(--s5),8vw,var(--s6));
+.caso{display:grid;gap:var(--s4);margin-top:clamp(var(--s4),5vw,var(--s5));
   max-width:880px;margin-inline:auto}
 @media (min-width:760px){.caso{grid-template-columns:1fr 1fr;gap:var(--s5)}}
 .caso__bloco{display:grid;gap:10px;align-content:start}
@@ -147,12 +147,12 @@
   text-transform:uppercase;color:var(--ciano)}
 .caso__bloco h3{margin:0;font-family:var(--f-display);font-weight:300;font-size:1.35rem;
   line-height:1.16;letter-spacing:-.018em;color:var(--claro)}
-.caso__bloco p{margin:0;color:var(--mudo);font-size:15.5px;line-height:1.6}
+.caso__bloco p{margin:0;color:var(--mudo);font-size:17px;line-height:1.55}
 
 /* --------------------------------------------------------------------------
    Quem somos
    -------------------------------------------------------------------------- */
-.socios{display:grid;gap:var(--s4);margin-top:clamp(var(--s5),8vw,var(--s6));max-width:820px;
+.socios{display:grid;gap:var(--s4);margin-top:clamp(var(--s4),5vw,var(--s5));max-width:820px;
   margin-inline:auto}
 .socios>*{min-width:0}
 @media (min-width:640px){.socios{grid-template-columns:1fr 1fr;gap:var(--s5)}}
@@ -165,12 +165,12 @@
   text-transform:uppercase;color:var(--ciano)}
 .socio__nome{margin:0;font-family:var(--f-display);font-weight:300;font-size:1.6rem;
   letter-spacing:-.02em;color:var(--claro)}
-.socio p:last-child{margin:0;color:var(--mudo);font-size:15.5px;line-height:1.55;max-width:32ch}
+.socio p:last-child{margin:0;color:var(--mudo);font-size:17px;line-height:1.5;max-width:32ch}
 
 /* --------------------------------------------------------------------------
    Perguntas
    -------------------------------------------------------------------------- */
-.faq{max-width:760px;margin:clamp(var(--s5),8vw,var(--s6)) auto 0;
+.faq{max-width:760px;margin:clamp(var(--s4),5vw,var(--s5)) auto 0;
   border-top:1px solid var(--fio)}
 .pergunta{border-bottom:1px solid var(--fio)}
 .pergunta>summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:var(--s3);
@@ -203,10 +203,10 @@
 .rodape__marca svg{width:104px;height:auto}
 .rodape__contatos{list-style:none;margin:0;padding:0;display:grid;gap:2px}
 .rodape__contatos a{display:inline-flex;align-items:center;min-height:44px;color:var(--mudo);
-  text-decoration:none;font-size:15.5px;transition:color var(--medio)}
+  text-decoration:none;font-size:17px;transition:color var(--medio)}
 .rodape__contatos a:hover{color:var(--ciano)}
 .rodape__legal{margin:var(--s5) 0 0;padding-top:var(--s3);border-top:1px solid var(--fio);
-  font-size:13.5px;color:var(--mudo);line-height:1.6;max-width:72ch}
+  font-size:15px;color:var(--mudo);line-height:1.6;max-width:72ch}
 
 /* --------------------------------------------------------------------------
    Até onde a gente entra
@@ -214,15 +214,15 @@
    profundidade de execução, não card de plano: por isso não tem borda de
    cartão, não fica ao lado de nada e não repete a palavra plano.
    -------------------------------------------------------------------------- */
-.entrega{max-width:700px;margin:clamp(var(--s6),12vw,var(--s7)) auto 0;
+.entrega{max-width:700px;margin:clamp(var(--s5),7vw,var(--s6)) auto 0;
   display:grid;gap:var(--s3);text-align:center;justify-items:center;
-  padding-top:clamp(var(--s5),7vw,var(--s6));border-top:1px solid var(--fio)}
+  padding-top:clamp(var(--s4),5vw,var(--s5));border-top:1px solid var(--fio)}
 .entrega__abre{margin:0;color:var(--mudo);max-width:48ch;
-  font-size:clamp(1rem,1.5vw,1.14rem);line-height:1.55}
+  font-size:clamp(1.12rem,1.7vw,1.3rem);line-height:1.48}
 .entrega__nome{margin:0;font-family:var(--f-display);font-weight:300;
   font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.1;letter-spacing:-.024em;color:var(--claro)}
 .entrega__nome em{font-style:normal;color:var(--ciano)}
-.entrega__corpo{margin:0;color:var(--mudo);max-width:52ch;font-size:16px;line-height:1.62}
+.entrega__corpo{margin:0;color:var(--mudo);max-width:54ch;font-size:17.5px;line-height:1.55}
 
 /* O pivô: é a frase que o cliente leva embora */
 .entrega__pivo{margin:var(--s2) 0;font-family:var(--f-display);font-weight:300;
@@ -230,7 +230,7 @@
   color:var(--claro);max-width:34ch;text-wrap:balance}
 
 /* A saída manda a escolha para a reunião, que é o que segura o plano único */
-.entrega__saida{margin:0;font-family:var(--f-display);font-size:14px;
+.entrega__saida{margin:0;font-family:var(--f-display);font-size:15.5px;
   letter-spacing:.03em;color:var(--mudo);max-width:40ch}
 
 /* --------------------------------------------------------------------------
@@ -244,7 +244,7 @@
 
 .duplo__texto{display:grid}
 .batida{min-height:auto;display:grid;align-content:center;gap:var(--s3);
-  padding-block:clamp(var(--s5),9vh,var(--s6))}
+  padding-block:clamp(var(--s4),5vh,var(--s5))}
 
 .duplo__pino{display:none}
 
@@ -256,7 +256,7 @@
   .duplo__pino{display:block;position:sticky;top:76px;height:calc(100svh - 76px);
     grid-column:2;grid-row:1}
   .duplo__texto{grid-column:1;grid-row:1}
-  .batida{min-height:78svh}
+  .batida{min-height:56svh}
 }
 
 .pino__quadro{position:relative;width:100%;height:100%;display:grid;
@@ -290,7 +290,7 @@
   overflow:hidden;border:1px solid var(--fio)}
 .pino__foto img{width:100%;height:100%;object-fit:cover;
   filter:saturate(.6) contrast(1.16) brightness(.76)}
-.pino__legenda{margin:var(--s2) 0 0;font-family:var(--f-display);font-size:13.5px;
+.pino__legenda{margin:var(--s2) 0 0;font-family:var(--f-display);font-size:15px;
   letter-spacing:.02em;color:var(--mudo);text-align:center}
 
 /* No celular a batida perde a altura de tela e vira leitura corrida */
@@ -324,18 +324,18 @@
   backdrop-filter:blur(2px)}
 
 /* As peças da roda: eixo, centro, raios, aro */
-.pecas{display:grid;gap:var(--s4);margin-top:clamp(var(--s5),8vw,var(--s6))}
+.pecas{display:grid;gap:var(--s4);margin-top:clamp(var(--s4),5vw,var(--s5))}
 .pecas>*{min-width:0}
 @media (min-width:760px){.pecas{grid-template-columns:1fr 1fr;gap:var(--s5)}}
 .peca{display:grid;gap:8px;align-content:start;padding-top:var(--s3);
   border-top:1px solid var(--fio-2)}
 .peca h3{margin:0;font-family:var(--f-display);font-weight:300;
   font-size:clamp(1.7rem,3.4vw,2.4rem);line-height:1;letter-spacing:-.026em;color:var(--ciano)}
-.peca p{margin:0;color:var(--mudo);font-size:16px;line-height:1.55;max-width:34ch}
+.peca p{margin:0;color:var(--mudo);font-size:17.5px;line-height:1.5;max-width:34ch}
 
 /* A régua do rodapé do carrossel, que vira assinatura de seção */
 .trilha{display:flex;flex-wrap:wrap;justify-content:center;gap:10px var(--s3);
-  margin-top:clamp(var(--s5),7vw,var(--s6));padding-top:var(--s3);
+  margin-top:clamp(var(--s4),5vw,var(--s5));padding-top:var(--s3);
   border-top:1px solid var(--fio)}
 .trilha span{font-family:var(--f-display);font-size:11.5px;letter-spacing:.22em;
   text-transform:uppercase;color:var(--mudo);transition:color var(--medio)}
@@ -450,7 +450,7 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
    de outro. Clicar troca o painel. Cada tópico tem sua cor, toda ela dentro
    da família do azul da marca: dá vida sem abrir um segundo acento.
    -------------------------------------------------------------------------- */
-.acervo{display:grid;gap:var(--s4);margin-top:clamp(var(--s5),8vw,var(--s6))}
+.acervo{display:grid;gap:var(--s4);margin-top:clamp(var(--s4),5vw,var(--s5))}
 .acervo>*{min-width:0}
 @media (min-width:900px){
   .acervo{grid-template-columns:minmax(0,280px) minmax(0,1fr);
@@ -488,8 +488,8 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
   object-position:50% 0;transition:transform 900ms cubic-bezier(.16,1,.3,1)}
 .obraCard:hover img{transform:scale(1.03)}
 .obraCard figcaption{display:grid;gap:3px}
-.obraCard__nome{margin:0;font-family:var(--f-display);font-size:15px;color:var(--claro)}
-.obraCard__linha{margin:0;font-size:13.5px;line-height:1.5;color:var(--mudo)}
+.obraCard__nome{margin:0;font-family:var(--f-display);font-size:16.5px;color:var(--claro)}
+.obraCard__linha{margin:0;font-size:15px;line-height:1.45;color:var(--mudo)}
 .obraCard__tag{position:absolute;left:12px;top:12px;z-index:2;margin:0;
   font-family:var(--f-display);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
   padding:5px 11px;border-radius:999px;color:#fff;
