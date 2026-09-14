@@ -55,7 +55,15 @@ await cdp('Emulation.setDeviceMetricsOverride',
   { width: larg, height: Math.round(larg * (larg < 700 ? 2.05 : 0.62)), deviceScaleFactor: 2, mobile: larg < 700 });
 // Caminho que já começa com http vai direto: serve para conferir o que está no ar.
 await cdp('Page.navigate', { url: /^https?:/.test(ARQ) ? ARQ : `http://127.0.0.1:${PORTA}/${ARQ}` });
-await new Promise(k => setTimeout(k, 1600));
+// Esperar o documento inteiro, não um tempo fixo: imagem que carrega depois
+// faz a página crescer e joga fora qualquer rolagem já feita.
+for (let i = 0; i < 60; i++) {
+  const r = await cdp('Runtime.evaluate', { returnByValue: true,
+    expression: "document.readyState === 'complete'" });
+  if (r.result.value) break;
+  await new Promise(k => setTimeout(k, 250));
+}
+await new Promise(k => setTimeout(k, 700));
 
 if (SELETOR) {
   // Número puro rola até aquela altura; o resto é seletor.

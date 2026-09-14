@@ -577,25 +577,40 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
   .btn--primario:active::after{animation:none}}
 
 /* --------------------------------------------------------------------------
-   O portal · a entrada da seção do espelho
-   A seção abre no M e mais nada. A rolagem traz ele de longe, ele cresce até
-   passar por cima da câmera, e o texto nasce da profundidade de onde ele veio.
+   O portal
+   Um palco travado na tela por várias alturas de rolagem, com as cenas
+   atravessando a profundidade uma a uma.
 
-   A escala do M não é escrita à mão: ele anda em linha reta no eixo Z e quem
-   faz a aceleração é a perspectiva. É por isso que a aproximação parece de
-   câmera e não de keyframe.
+   A classe portal--vivo troca o modo de layout inteiro, não só a animação.
+   Sem ela (sem JS, ou com prefers-reduced-motion) o palco é fluxo normal: as
+   cenas ficam uma embaixo da outra, legíveis, e a roda fica parada montada.
+   Com ela o palco vira grade empilhada, travada e com perspectiva.
 
-   Sem JS a classe portal--vivo nunca entra e o palco fica parado com o texto
-   legível. O argumento continua de pé.
+   A altura do trilho entra pelo JS, do número de cenas vezes o passo. Não está
+   escrita aqui de propósito: acrescentar uma cena no HTML não pede conta nova.
    -------------------------------------------------------------------------- */
 .secao--portal{padding-top:clamp(var(--s3),3vw,var(--s5))}
+.portal{position:relative}
 
-.portal{position:relative;height:260svh;
-  margin-bottom:clamp(var(--s4),5vw,var(--s6))}
-.portal__palco{position:sticky;top:0;height:100svh;overflow:hidden;
-  display:grid;place-items:center;
+/* Sem JS (ou com prefers-reduced-motion): fluxo normal, tudo legível, e a
+   roda já montada. Os valores abaixo são o estado final; quando o motor roda,
+   ele escreve os mesmos nomes no style do elemento e ganha por ser inline. */
+.roda{--a:1;--r1:1;--r2:1;--r3:1;--r4:1;--cubo:1;--oco:1}
+.portal__palco{display:block;text-align:center}
+.portal__palco > .portal__bruma,.portal__palco > .portal__luz{display:none}
+.portal__palco > .portal__cena{margin-inline:auto;
+  padding-block:clamp(var(--s4),5vw,var(--s6))}
+.portal__palco > .roda{width:min(62vw,380px)}
+.portal__palco > .portal__m{width:min(52vw,420px)}
+.portal__palco > .roda,.portal__palco > .portal__m{
+  margin:0 auto clamp(var(--s4),5vw,var(--s6))}
+
+/* Com JS */
+.portal__palco.portal--vivo{position:sticky;top:0;height:100svh;overflow:hidden;
+  display:grid;place-items:center;text-align:initial;
   perspective:1200px;perspective-origin:50% 46%}
-.portal__palco > *{grid-area:1/1}
+.portal--vivo > *{grid-area:1/1;margin:0}
+.portal--vivo > .portal__bruma,.portal--vivo > .portal__luz{display:block}
 
 /* Boca de túnel: o canto fecha um pouco para o meio virar o longe. */
 .portal__bruma{width:100%;height:100%;pointer-events:none;
@@ -613,31 +628,129 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
   pointer-events:none;opacity:0;
   background:radial-gradient(circle,rgba(0,180,255,.42) 0%,rgba(0,180,255,.14) 38%,rgba(0,180,255,0) 68%)}
 
-.portal__miolo{max-width:min(92vw,54ch);text-align:center;
-  will-change:transform,opacity,filter}
-.portal__miolo .etiqueta{justify-content:center}
-
 .portal--vivo .portal__m{
   transform:translateZ(calc(var(--mZ,0) * 1px));
   opacity:var(--mOp,1);
   filter:blur(calc(var(--mBorr,0) * 1px))}
 .portal--vivo .portal__luz{opacity:var(--luz,0)}
-.portal--vivo .portal__miolo{
-  transform:translateZ(calc(var(--tZ,0) * 1px));
-  opacity:var(--tOp,1);
-  filter:blur(calc(var(--tBorr,0) * 1px))}
 
 @media (max-width:899px){
-  .portal{height:220svh}
   .portal__m{width:86vw}
+  /* No celular a roda não cerca o texto: ela vira objeto acima dele. Um círculo
+     grande o bastante para abraçar um bloco de texto alto não cabe em 393px de
+     largura, e o anel acabaria cortando a frase. Duas linhas resolvem. */
+  .portal--vivo{grid-template-rows:auto auto;
+    align-content:center;justify-items:center;gap:clamp(var(--s3),5vw,var(--s5))}
+  .portal--vivo > .roda{grid-area:1/1;align-self:end;width:min(56vw,270px)}
+  .portal--vivo > .portal__cena{grid-area:2/1;align-self:start}
+  .portal--vivo > .portal__m,
+  .portal--vivo > .portal__bruma,
+  .portal--vivo > .portal__luz{grid-area:1/1/3/2;align-self:center}
 }
+
+/* --------------------------------------------------------------------------
+   As cenas do portal
+   Cada bloco atravessa a tela: nasce longe e desfocado, chega ao plano da
+   página, fica um tempo, e recua para trás da câmera enquanto o próximo já
+   está vindo. O engate entre um e outro é o que dá a sensação de percurso.
+   -------------------------------------------------------------------------- */
+.portal__cena{max-width:min(84vw,42ch);text-align:center;pointer-events:none;
+  will-change:transform,opacity,filter}
+.portal__cena .etiqueta,.portal__cena .etapa__papel{justify-content:center;text-align:center}
+.portal--vivo .portal__cena{
+  transform:translateZ(calc(var(--z,0) * 1px));
+  opacity:var(--op,1);
+  filter:blur(calc(var(--borr,0) * 1px))}
+
+/* Um degrau abaixo do display do topo: as batidas são subordinadas ao título
+   da seção, e a hierarquia tem que aparecer no tamanho. */
+.tela--m{font-size:clamp(2.1rem,5vw,3.6rem)}
+
+/* --------------------------------------------------------------------------
+   A roda
+   Um componente, dois argumentos. No espelho ela aparece sem centro: os raios
+   se desenham, tremem, e o meio segue oco. No método o centro é a primeira
+   coisa a existir e cada raio se prende nele.
+
+   Os raios nascem da ponta por stroke-dashoffset, que é como linha se desenha
+   de verdade. O comprimento de 112 é a distância do cubo ao aro no viewBox.
+   -------------------------------------------------------------------------- */
+.roda{width:min(96vw,1240px);height:auto;color:var(--claro);
+  pointer-events:none;opacity:.62}
+.roda__aro{fill:none;stroke:currentColor;stroke-width:1.2;opacity:.20;
+  stroke-dasharray:942.5;stroke-dashoffset:calc((1 - var(--a,0)) * 942.5px);
+  transform:rotate(-90deg);transform-origin:200px 200px}
+.roda__raios{transform-origin:200px 200px}
+/* O raio nasce preso no aro e cresce para dentro. Ele para bem antes do meio:
+   o miolo é onde o texto mora, e raio cruzando frase vira risco de caneta. */
+.roda__raio{stroke:currentColor;stroke-width:2.5;stroke-linecap:round;
+  stroke-dasharray:54;stroke-dashoffset:calc((1 - var(--r,0)) * 54px);
+  opacity:calc(.14 + var(--r,0) * .56)}
+.roda__cubo{fill:none;stroke:var(--ciano);stroke-width:2.5;
+  transform-origin:200px 200px;
+  transform:scale(calc(.72 + var(--cubo,0) * .28));
+  opacity:calc(var(--cubo,0) * .78)}
+.roda__brilho{fill:var(--ciano);transform-origin:200px 200px;
+  transform:scale(calc(.5 + var(--cubo,0) * .5));
+  opacity:calc(var(--cubo,0) * .07);filter:blur(26px)}
+/* O oco: o centro que ninguém construiu. Tracejado porque é ausência, não peça. */
+.roda__oco{fill:none;stroke:var(--ciano);stroke-width:2.5;stroke-dasharray:3 11;
+  stroke-linecap:round;opacity:calc(var(--oco,0) * .8);
+  transform-origin:200px 200px;transform:scale(calc(.72 + var(--oco,0) * .28))}
+
+.roda.tremendo .roda__raios{animation:bamba 2.1s ease-in-out infinite}
+@keyframes bamba{
+  0%,100%{transform:rotate(0deg)}
+  26%{transform:rotate(2.4deg)}
+  58%{transform:rotate(-1.7deg)}
+  80%{transform:rotate(.9deg)}}
 @media (prefers-reduced-motion:reduce){
-  .portal{height:auto}
-  .portal__palco{position:static;height:auto;
-    padding-block:clamp(var(--s5),8vw,var(--s7))}
-  .portal__m{width:min(60vw,420px)}
-  .portal__palco{display:block;text-align:center}
-  .portal__palco > *{grid-area:auto}
-  .portal__bruma,.portal__luz{display:none}
-  .portal__miolo{margin-top:var(--s5);margin-inline:auto}
+  .roda.tremendo .roda__raios{animation:none}
+}
+
+/* --------------------------------------------------------------------------
+   A barra de rolagem da casa
+   Substitui a do sistema só onde existe ponteiro fino. Em toque a barra nativa
+   já se esconde sozinha e uma barra fixa na borda só atrapalharia.
+
+   Ela não é um tubo com um bastão dentro: é um mapa. Cada seção tem uma marca,
+   a marca da seção em que você está fica acesa, e clicar nela pula para lá.
+   Numa página com dois trechos travados isso deixa de ser enfeite e vira
+   orientação.
+   -------------------------------------------------------------------------- */
+.rolagem{display:none}
+@media (hover:hover) and (pointer:fine){
+  html{scrollbar-width:none}
+  html::-webkit-scrollbar{width:0;height:0}
+
+  .rolagem{display:block;position:fixed;top:0;right:0;bottom:0;width:18px;
+    z-index:60;cursor:pointer;touch-action:none;
+    -webkit-user-select:none;user-select:none}
+  /* O trilho só aparece quando a mão chega perto. Parado, o que se vê é o punho. */
+  .rolagem::before{content:"";position:absolute;top:16px;bottom:16px;right:8px;
+    width:2px;border-radius:2px;background:rgba(122,152,184,.20);
+    opacity:0;transition:opacity 200ms ease}
+  .rolagem:hover::before,.rolagem.pegando::before{opacity:1}
+
+  .rolagem__punho{position:absolute;right:7px;width:4px;min-height:44px;
+    border-radius:4px;
+    background:linear-gradient(180deg,#0A2340 0%,#0071AD 46%,#00B4FF 100%);
+    box-shadow:0 0 14px rgba(0,180,255,.40);
+    transition:width 180ms ease,right 180ms ease,box-shadow 180ms ease}
+  .rolagem:hover .rolagem__punho,.rolagem.pegando .rolagem__punho{
+    width:8px;right:5px;box-shadow:0 0 22px rgba(0,180,255,.75)}
+
+  .rolagem__marca{position:absolute;right:8px;width:2px;height:2px;
+    border-radius:50%;background:rgba(122,152,184,.45);
+    transform:translateY(-50%);
+    transition:background 220ms ease,width 220ms ease,right 220ms ease,
+               height 220ms ease,box-shadow 220ms ease}
+  .rolagem:hover .rolagem__marca{width:6px;height:6px;right:6px}
+  .rolagem__marca.aqui{background:var(--ciano);width:6px;height:6px;right:6px;
+    box-shadow:0 0 10px rgba(0,180,255,.9)}
+  .rolagem:hover .rolagem__marca.aqui{width:8px;height:8px;right:5px}
+
+  @media (prefers-reduced-motion:reduce){
+    .rolagem::before,.rolagem__punho,.rolagem__marca{transition:none}
+  }
 }

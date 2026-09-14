@@ -164,59 +164,208 @@
 
 /* ==========================================================================
    O portal
-   Uma variável de rolagem (0 a 1) alimenta todas as camadas do palco. O M
-   anda em linha reta no eixo Z e a perspectiva faz a aceleração sozinha, que
-   é o que separa aproximação de câmera de crescimento de keyframe.
+   Um palco travado na tela por várias alturas de rolagem. Cada cena atravessa
+   a profundidade: nasce longe e desfocada, chega ao plano da página, fica, e
+   recua enquanto a próxima já vem vindo.
+
+   A altura do trilho não está escrita no CSS: ela sai do número de cenas vezes
+   o passo. Assim dá para acrescentar ou tirar uma cena no HTML sem recalcular
+   nada à mão.
+
+   Sem JS a classe portal--vivo nunca entra, o palco fica parado e as cenas
+   ficam empilhadas e legíveis. O argumento continua de pé.
    ========================================================================== */
 (function () {
   'use strict';
-  var trilho = document.querySelector('[data-portal]');
-  if (!trilho) return;
-  var palco = trilho.querySelector('.portal__palco');
-  if (!palco) return;
+  var trilhos = [].slice.call(document.querySelectorAll('[data-portal]'));
+  if (!trilhos.length) return;
+  var calmo = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function fatia(v, a, b) { return Math.min(1, Math.max(0, (v - a) / (b - a))); }
   function suave(t) { return t * t * (3 - 2 * t); }
-  function po(n, v) { palco.style.setProperty(n, v); }
 
-  function pintar(p) {
-    /* O M: caminho reto de longe (-500) até passar a câmera (1020). A curva
-       de tamanho é a perspectiva, não uma função escrita aqui. */
-    var z = -500 + Math.pow(fatia(p, 0, .54), 1.22) * 1520;
-    po('--mZ', z.toFixed(1));
-    po('--mOp', (1 - fatia(z, 600, 1005)).toFixed(3));
-    po('--mBorr', (fatia(z, 470, 1020) * 13).toFixed(2));
+  function montar(trilho) {
+    var palco = trilho.querySelector('.portal__palco');
+    if (!palco) return null;
+    var oM    = trilho.querySelector('.portal__m');
+    var oLuz  = trilho.querySelector('.portal__luz');
+    var roda  = trilho.querySelector('.roda');
+    var cenas = [].slice.call(trilho.querySelectorAll('.portal__cena'));
+    var comM  = trilho.hasAttribute('data-portal-m');
+    var passo = parseInt(trilho.getAttribute('data-portal-passo') || '100', 10);
+    var vagas = cenas.length + (comM ? 1 : 0);
+    var s     = 1 / vagas;                         // quanto vale uma vaga
+    var monta = roda && roda.classList.contains('roda--monta');
 
-    /* O texto vem do mesmo longe de onde o M saiu, com foco chegando junto. */
-    var t = suave(fatia(p, .30, .80));
-    po('--tZ', (-1600 + t * 1600).toFixed(1));
-    po('--tOp', fatia(t, 0, .40).toFixed(3));
-    po('--tBorr', ((1 - fatia(t, 0, .60)) * 16).toFixed(2));
+    if (!calmo) {
+      /* Só quem vai animar vira palco travado. Quem pediu menos movimento fica
+         com as cenas em fluxo normal, uma embaixo da outra, tudo legível. */
+      var estreito = window.matchMedia('(max-width:899px)').matches;
+      trilho.style.height = Math.round(vagas * passo * (estreito ? .86 : 1)) + 'svh';
+      palco.classList.add('portal--vivo');
+    }
 
-    /* O estouro de luz na passagem, para a troca ter um momento e não um corte. */
-    po('--luz', (suave(Math.max(0, 1 - Math.abs(p - .47) / .17)) * .8).toFixed(3));
+    function po(el, n, v) { el.style.setProperty(n, v); }
+
+    function pintar(p) {
+      /* O M: linha reta no eixo Z. A curva de tamanho é a perspectiva, não uma
+         função escrita aqui, e é isso que faz parecer câmera. */
+      if (oM) {
+        var z = -500 + Math.pow(fatia(p, 0, s * .94), 1.22) * 1520;
+        po(oM, '--mZ', z.toFixed(1));
+        po(oM, '--mOp', (1 - fatia(z, 600, 1005)).toFixed(3));
+        po(oM, '--mBorr', (fatia(z, 470, 1020) * 13).toFixed(2));
+        if (oLuz) po(oLuz, '--luz',
+          (suave(Math.max(0, 1 - Math.abs(p - s * .88) / (s * .34))) * .8).toFixed(3));
+      }
+
+      cenas.forEach(function (c, i) {
+        var centro = ((comM ? 1 : 0) + i + .5) * s;
+        var ent = suave(fatia(p, centro - .78 * s, centro - .06 * s));
+        var sai = i === cenas.length - 1 ? 0
+                : suave(fatia(p, centro + .26 * s, centro + .95 * s));
+        po(c, '--z',   (-1500 * (1 - ent) + 860 * sai).toFixed(1));
+        po(c, '--op',  (fatia(ent, 0, .42) * (1 - fatia(sai, 0, .55))).toFixed(3));
+        po(c, '--borr', (16 * (1 - ent) + 15 * sai).toFixed(2));
+      });
+
+      if (!roda) return;
+      if (monta) {
+        /* O método: o centro primeiro, na vaga 1, e cada raio se prendendo nele
+           na vaga da sua etapa. É a ordem em que a gente trabalha. */
+        po(roda, '--cubo', suave(fatia(p, s * 1.05, s * 1.75)).toFixed(3));
+        po(roda, '--a', suave(fatia(p, s * 1.2, s * (vagas - .2))).toFixed(3));
+        for (var k = 0; k < 4; k++) {
+          po(roda, '--r' + (k + 1),
+             suave(fatia(p, s * (k + 2.05), s * (k + 2.7))).toFixed(3));
+        }
+      } else {
+        /* O espelho: os raios aparecem sozinhos na vaga 1, tremem na vaga 2, e
+           na vaga 3 o meio se revela oco. O centro nunca vem, que é o ponto. */
+        po(roda, '--a', suave(fatia(p, s * 2.0, s * 3.0)).toFixed(3));
+        for (var j = 0; j < 4; j++) {
+          po(roda, '--r' + (j + 1),
+             suave(fatia(p, s * (2.05 + j * .2), s * (2.5 + j * .2))).toFixed(3));
+        }
+        po(roda, '--oco', suave(fatia(p, s * 4.1, s * 4.6)).toFixed(3));
+        roda.classList.toggle('tremendo', !calmo && p > s * 3.0 && p < s * 4.05);
+      }
+    }
+
+    return { trilho: trilho, pintar: pintar };
   }
 
-  palco.classList.add('portal--vivo');
+  var palcos = trilhos.map(montar).filter(Boolean);
+  if (!palcos.length) return;
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { pintar(1); return; }
+  if (calmo) return;
 
-  var pedido = 0, naTela = true;
+  var pedido = 0;
   function medir() {
     pedido = 0;
-    var r = trilho.getBoundingClientRect();
-    var curso = r.height - window.innerHeight;
-    pintar(curso <= 0 ? 1 : Math.min(1, Math.max(0, -r.top / curso)));
+    var alt = window.innerHeight;
+    palcos.forEach(function (o) {
+      var r = o.trilho.getBoundingClientRect();
+      if (r.bottom < -alt || r.top > alt * 2) return;   // longe demais para importar
+      var curso = r.height - alt;
+      o.pintar(curso <= 0 ? 1 : Math.min(1, Math.max(0, -r.top / curso)));
+    });
   }
-  function agendar() { if (!pedido && naTela) pedido = requestAnimationFrame(medir); }
-
-  new IntersectionObserver(function (e) {
-    naTela = e[0].isIntersecting;
-    agendar();
-    if (!naTela) medir();          // deixa o último quadro certo ao sair de vista
-  }, { rootMargin: '150px' }).observe(trilho);
+  function agendar() { if (!pedido) pedido = requestAnimationFrame(medir); }
 
   window.addEventListener('scroll', agendar, { passive: true });
   window.addEventListener('resize', agendar);
   medir();
+})();
+
+/* ==========================================================================
+   A barra de rolagem da casa
+   Só entra onde existe ponteiro fino. Em toque a barra nativa se esconde
+   sozinha e uma barra fixa na borda seria estorvo.
+
+   Ela arrasta, aceita clique no trilho para pular, e carrega uma marca por
+   seção com a marca da seção atual acesa. Numa página com dois trechos
+   travados, isso é orientação, não enfeite.
+   ========================================================================== */
+(function () {
+  'use strict';
+  var barra = document.querySelector('[data-rolagem]');
+  if (!barra) return;
+  if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+
+  var punho = barra.querySelector('.rolagem__punho');
+  var doc   = document.documentElement;
+  var MIN   = 44;                                  // punho nunca some de vista
+
+  var secoes = [].slice.call(document.querySelectorAll('[data-chao]')).map(function (sec) {
+    var marca = document.createElement('i');
+    marca.className = 'rolagem__marca';
+    barra.appendChild(marca);
+    return { sec: sec, marca: marca };
+  });
+
+  var altura = 0, curso = 0, cursoPunho = 0;
+
+  function remedir() {
+    var r = barra.getBoundingClientRect();
+    altura = r.height - 32;                         // as margens de 16px do trilho
+    var total = doc.scrollHeight;
+    var visao = window.innerHeight;
+    curso = Math.max(1, total - visao);
+
+    var alt = Math.max(MIN, Math.round(visao / total * altura));
+    punho.style.height = alt + 'px';
+    cursoPunho = altura - alt;
+
+    secoes.forEach(function (o) {
+      var topo = o.sec.getBoundingClientRect().top + window.scrollY;
+      o.marca.style.top = (16 + Math.min(1, topo / total) * altura) + 'px';
+    });
+  }
+
+  function pintar() {
+    var y = window.scrollY;
+    punho.style.transform = 'translateY(' + (16 + (y / curso) * cursoPunho) + 'px)';
+
+    var meio = y + window.innerHeight * .4, atual = 0;
+    secoes.forEach(function (o, i) {
+      if (o.sec.getBoundingClientRect().top + y <= meio) atual = i;
+    });
+    secoes.forEach(function (o, i) { o.marca.classList.toggle('aqui', i === atual); });
+  }
+
+  /* Uma coordenada de tela vira uma posição de rolagem. O -22 põe o cursor no
+     meio do punho em vez da ponta, que é o que a mão espera ao arrastar. */
+  function levar(clientY) {
+    var topo = barra.getBoundingClientRect().top;
+    var f = (clientY - topo - 16 - punho.offsetHeight / 2) / Math.max(1, cursoPunho);
+    window.scrollTo(0, Math.min(1, Math.max(0, f)) * curso);
+  }
+
+  barra.addEventListener('pointerdown', function (e) {
+    barra.classList.add('pegando');
+    barra.setPointerCapture(e.pointerId);
+    levar(e.clientY);
+    e.preventDefault();
+  });
+  barra.addEventListener('pointermove', function (e) {
+    if (barra.classList.contains('pegando')) levar(e.clientY);
+  });
+  ['pointerup', 'pointercancel'].forEach(function (n) {
+    barra.addEventListener(n, function (e) {
+      barra.classList.remove('pegando');
+      if (barra.hasPointerCapture(e.pointerId)) barra.releasePointerCapture(e.pointerId);
+    });
+  });
+
+  var pedido = 0;
+  function agendar() { if (!pedido) pedido = requestAnimationFrame(function () { pedido = 0; pintar(); }); }
+  window.addEventListener('scroll', agendar, { passive: true });
+  window.addEventListener('resize', function () { remedir(); pintar(); });
+
+  /* Os trilhos dos portais só ganham altura depois que o motor deles roda, e
+     fonte que carrega tarde também muda a altura da página. Uma remedida no
+     load resolve os dois sem observador. */
+  window.addEventListener('load', function () { remedir(); pintar(); });
+  remedir(); pintar();
 })();

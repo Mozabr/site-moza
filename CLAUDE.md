@@ -80,24 +80,52 @@ Cada tópico tem cor própria, **toda dentro da família do azul**: `#0071AD`,
 `#0096DC`, `#00B4FF`. Dá vida sem abrir um segundo acento, que o brandbook
 proíbe. Hue estranho (laranja, roxo como a Apple usa) quebraria a regra.
 
-## O portal (abertura do espelho)
+## Os portais (o espelho e o método)
 
-A seção do espelho abre no M e mais nada. A rolagem traz ele de longe, ele
-cresce até passar por cima da câmera, e o texto nasce da profundidade de onde
-ele veio.
+Duas seções são palcos travados na tela: o espelho e o método. Cada cena
+atravessa a profundidade, nasce longe e desfocada, chega ao plano da página,
+fica, e recua enquanto a próxima já vem vindo.
 
 A escala do M **não é escrita à mão**. Ele anda em linha reta no eixo Z
 (`translateZ`, de -500px a 1020px) e quem faz a aceleração é a perspectiva de
-1200px do palco. É por isso que a aproximação parece de câmera e não de
-keyframe: a curva é a hipérbole `1200/(1200-z)`, de graça.
+1200px do palco. A curva é a hipérbole `1200/(1200-z)`, de graça, e é o que
+separa aproximação de câmera de crescimento de keyframe.
 
-Uma variável só (`--p`, a fração rolada do trilho) alimenta todas as camadas,
-pelo `site.js`. Sem JS a classe `portal--vivo` nunca entra e o palco fica
-parado com o texto legível.
+**A altura do trilho não está no CSS.** Ela sai de `número de cenas × passo`,
+escrita pelo `site.js`. Acrescentar ou tirar uma cena no HTML não pede conta
+nova: só mexa em `data-portal-passo` se quiser o percurso mais curto ou mais
+longo (hoje 105 no espelho, 90 no método, em svh por cena).
+
+**A classe `portal--vivo` troca o modo de layout inteiro**, não só a animação.
+Sem ela (sem JS, ou com `prefers-reduced-motion`) o palco é fluxo normal: as
+cenas ficam uma embaixo da outra e a roda fica parada e montada. Por isso os
+valores da roda têm padrão 1 no CSS: o motor escreve os mesmos nomes no style
+do elemento e ganha por ser inline.
 
 Não pôr `overflow:hidden` no trilho (`.portal`): mata o `sticky` do palco. Ele
-vai no palco, que é o próprio elemento travado, e é o que segura o M gigante
-dentro da tela.
+vai no palco, que é o próprio elemento travado.
+
+### A roda, um componente e dois argumentos
+
+No espelho ela aparece **sem centro**: os raios se desenham, tremem, e o meio
+segue oco (anel tracejado em ciano). No método o **centro é a primeira coisa a
+existir** e cada raio se prende nele na ordem em que a gente trabalha. É a
+mesma peça contando metades opostas da história.
+
+Os raios nascem presos no aro e crescem para dentro, parando em `r=96`, que é
+exatamente onde mora o anel do centro. O miolo fica livre porque é lá que o
+texto senta: raio cruzando frase vira risco de caneta. No celular isso não
+cabe (círculo que abrace um bloco alto não entra em 393px), e a roda vira
+objeto acima do texto, em duas linhas de grade.
+
+## A barra de rolagem da casa
+
+Substitui a do sistema só em ponteiro fino (`hover:hover and pointer:fine`).
+Em toque a nativa já se esconde sozinha e uma barra fixa na borda atrapalharia.
+
+Ela não é um tubo com um bastão: é um mapa. Uma marca por seção (`[data-chao]`),
+a marca da seção atual acesa em ciano, clique pula para lá, e o punho arrasta.
+Numa página com dois trechos travados isso é orientação, não enfeite.
 
 ## Gradiente de SVG mora em SVG que sempre existe
 

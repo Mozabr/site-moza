@@ -96,13 +96,24 @@
 
   <!-- O ESPELHO · narrativa do carrossel 02/05 -->
   <section class="secao secao--portal tom-cinza" data-chao="#F2F5F9" data-tom="claro">
-    <!-- O PORTAL
-         A seção abre no M e mais nada. A rolagem traz ele de longe, ele passa
-         por cima da câmera e sai de quadro, e o texto nasce da profundidade de
-         onde ele veio. É a entrada do visitante no argumento. -->
-    <div class="portal" data-portal>
+    <!-- O PORTAL DO ESPELHO
+         Abre no M, que vem de longe e passa por cima da câmera. Depois as três
+         batidas do argumento atravessam a tela uma a uma, e atrás delas a roda
+         se desenha: os raios aparecem, tremem, e o centro nunca vem. O vazio no
+         meio é o argumento. O método, mais abaixo, é quem preenche ele. -->
+    <div class="portal" data-portal data-portal-m="1" data-portal-passo="105">
       <div class="portal__palco">
         <div class="portal__bruma" aria-hidden="true"></div>
+        <svg class="roda roda--oca" viewBox="0 0 400 400" aria-hidden="true">
+          <circle class="roda__aro" cx="200" cy="200" r="150"/>
+          <g class="roda__raios">
+            <line class="roda__raio" style="--r:var(--r1,0)" x1="306.1" y1="306.1" x2="267.9" y2="267.9"/>
+            <line class="roda__raio" style="--r:var(--r2,0)" x1="93.9" y1="306.1" x2="132.1" y2="267.9"/>
+            <line class="roda__raio" style="--r:var(--r3,0)" x1="93.9" y1="93.9" x2="132.1" y2="132.1"/>
+            <line class="roda__raio" style="--r:var(--r4,0)" x1="306.1" y1="93.9" x2="267.9" y2="132.1"/>
+          </g>
+          <circle class="roda__oco" cx="200" cy="200" r="96"/>
+        </svg>
         <svg class="marcaM portal__m" viewBox="0 0 1081 613" aria-hidden="true">
           <!-- Os gradientes moram aqui porque o portal existe em toda tela. No
                objeto travado eles sumiam no celular, que o esconde com
@@ -128,39 +139,32 @@
           <path fill="url(#aco)" d="M 0,450.56 L 31.88,568.97 L 398.88,191.66 L 539.22,613 L 922.62,190.09 L 1003.79,481.69 L 1081,402.96 L 968.23,0 L 783.86,186.18 L 577.65,417.39 L 441.47,2.66 Z"/>
         </svg>
         <div class="portal__luz" aria-hidden="true"></div>
-        <div class="portal__miolo">
+
+        <div class="portal__cena">
           <p class="etiqueta">O espelho</p>
           <h2 class="tela" style="margin-top:var(--s3);max-width:13ch">Toda roda tem raios.</h2>
           <p class="corpo corpo--g" style="margin-top:var(--s3);max-width:42ch;margin-inline:auto">Você
           sobe campanha, o clique vem, o cliente não. O problema quase nunca está no criativo.</p>
         </div>
-      </div>
-    </div>
-    <div class="env duplo__grade" data-duplo style="margin-top:clamp(var(--s5),8vw,var(--s6))">
-      <div class="duplo__texto">
-        <article class="batida" data-batida>
-          <h3 class="sub">Todo mundo mexe nos raios.</h3>
-          <p class="corpo">Troca o criativo, troca a oferta, troca o direcionamento. É onde a mão
-          alcança, e é o que todo mundo faz quando o resultado não vem.</p>
-        </article>
-        <article class="batida" data-batida>
-          <h3 class="sub">E a roda continua instável.</h3>
-          <p class="corpo">Porque cada raio puxa para um lado, e nenhum deles sustenta os outros.
-          Mexer em raio solto não estabiliza roda nenhuma.</p>
-        </article>
-        <article class="batida" data-batida>
-          <h3 class="sub">Mas, e o centro?</h3>
-          <p class="corpo">Ninguém construiu a peça que segura tudo. Sem ela a roda gira, gasta
-          verba, e não sai do lugar.</p>
-        </article>
-      </div>
-      <div class="duplo__pino" aria-hidden="true">
-        <div class="pino__quadro">
-          <div class="pino__estado" data-estado><p class="pino__frase">Troca<br><em>o criativo.</em></p></div>
-          <div class="pino__estado" data-estado><p class="pino__frase">A roda<br><em>segue bamba.</em></p></div>
-          <div class="pino__estado" data-estado><div class="pino__emergindo"><svg class="marcaM" viewBox="0 0 1081 613" role="img" aria-label="Símbolo da Moza">
-            <path fill="url(#aco)" d="M 0,450.56 L 31.88,568.97 L 398.88,191.66 L 539.22,613 L 922.62,190.09 L 1003.79,481.69 L 1081,402.96 L 968.23,0 L 783.86,186.18 L 577.65,417.39 L 441.47,2.66 Z"/>
-          </svg></div></div>
+
+        <div class="portal__cena" data-roda="raios">
+          <h3 class="tela tela--m">Todo mundo mexe nos raios.</h3>
+          <p class="corpo corpo--g" style="margin-top:var(--s3);max-width:44ch;margin-inline:auto">Troca
+          o criativo, troca a oferta, troca o direcionamento. É onde a mão alcança, e é o que todo
+          mundo faz quando o resultado não vem.</p>
+        </div>
+
+        <div class="portal__cena" data-roda="bamba">
+          <h3 class="tela tela--m">E a roda continua instável.</h3>
+          <p class="corpo corpo--g" style="margin-top:var(--s3);max-width:44ch;margin-inline:auto">Porque
+          cada raio puxa para um lado, e nenhum deles sustenta os outros. Mexer em raio solto não
+          estabiliza roda nenhuma.</p>
+        </div>
+
+        <div class="portal__cena" data-roda="oco">
+          <h3 class="tela tela--m">Mas, e o centro?</h3>
+          <p class="corpo corpo--g" style="margin-top:var(--s3);max-width:44ch;margin-inline:auto">Ninguém
+          construiu a peça que segura tudo. Sem ela a roda gira, gasta verba, e não sai do lugar.</p>
         </div>
       </div>
     </div>
@@ -202,81 +206,68 @@
   </section>
 
   <!-- O MÉTODO -->
-  <section class="secao tom-cinza" id="metodo" data-chao="#F2F5F9" data-tom="claro">
-    <div class="env">
-      <div class="centro entra">
-        <p class="etiqueta">O método</p>
-        <h2 class="tela" style="margin-top:var(--s3);max-width:14ch">Cinco etapas. Uma ordem.</h2>
-        <p class="corpo corpo--g" style="margin-top:var(--s3)">O Diagnóstico é o centro: é onde a
-        gente mede onde a sua marca está antes de qualquer investimento. As outras quatro são os
-        raios que se prendem nele.</p>
-      </div>
-    </div>
-    <div class="env duplo__grade" data-duplo id="d2" style="margin-top:clamp(var(--s5),8vw,var(--s6))">
-      <div class="duplo__texto">
-        <article class="batida" data-batida>
-          <p class="etapa__papel batida__cabeca">Centro</p>
-          <h3 class="etapa__nome batida__cabeca" style="text-align:left">Diagnóstico.</h3>
-          <p class="corpo">Onde a sua marca está hoje, medido antes de qualquer investimento.</p>
-          <ul class="etapa__itens" style="justify-content:flex-start"><li>Mapa mental ao vivo</li><li>Leitura dos canais</li><li>Ponto de partida escrito</li></ul>
-        </article>
-        <article class="batida" data-batida>
-          <p class="etapa__papel batida__cabeca">Raio 1</p>
-          <h3 class="etapa__nome batida__cabeca" style="text-align:left">Posicionamento.</h3>
-          <p class="corpo">Como a sua marca aparece quando alguém pesquisa antes de comprar.</p>
-          <ul class="etapa__itens" style="justify-content:flex-start"><li>Mensagem e promessa</li><li>Identidade</li><li>Vitrine digital</li></ul>
-        </article>
-        <article class="batida" data-batida>
-          <p class="etapa__papel batida__cabeca">Raio 2</p>
-          <h3 class="etapa__nome batida__cabeca" style="text-align:left">Conteúdo que atrai.</h3>
-          <p class="corpo">Como chega gente nova todo dia, com conteúdo e alcance.</p>
-          <ul class="etapa__itens" style="justify-content:flex-start"><li>Linha editorial</li><li>Roteiro e pauta</li><li>Ritmo de publicação</li></ul>
-        </article>
-        <article class="batida" data-batida>
-          <p class="etapa__papel batida__cabeca">Raio 3</p>
-          <h3 class="etapa__nome batida__cabeca" style="text-align:left">Venda.</h3>
-          <p class="corpo">Como interesse vira cliente, com estrutura e oferta certas.</p>
-          <ul class="etapa__itens" style="justify-content:flex-start"><li>Oferta e argumento</li><li>Caminho até o fechamento</li><li>Tráfego pago</li></ul>
-        </article>
-        <article class="batida" data-batida>
-          <p class="etapa__papel batida__cabeca">Raio 4</p>
-          <h3 class="etapa__nome batida__cabeca" style="text-align:left">Jornada do consumidor.</h3>
-          <p class="corpo">Como o resultado se sustenta, lido e ajustado todo mês.</p>
-          <ul class="etapa__itens" style="justify-content:flex-start"><li>Leitura mensal</li><li>Ajuste do que não performou</li><li>Você sabe onde está</li></ul>
-        </article>
-      </div>
-      <div class="duplo__pino" aria-hidden="true">
-        <div class="pino__quadro">
-          <div class="pino__estado" data-estado><div class="pino__marco">
-            <svg class="rodaMonta" viewBox="0 0 240 240" aria-hidden="true"><circle cx="120" cy="120" r="96" fill="none" stroke="currentColor" stroke-width="2" opacity="0.16"/><line x1="132.0" y1="132.0" x2="187.9" y2="187.9" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".10"/><line x1="108.0" y1="132.0" x2="52.1" y2="187.9" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".10"/><line x1="108.0" y1="108.0" x2="52.1" y2="52.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".10"/><line x1="132.0" y1="108.0" x2="187.9" y2="52.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".10"/><circle cx="120" cy="120" r="17" fill="var(--ciano-texto,#00B4FF)"/></svg>
-            <p class="pino__papel">Centro</p>
-            <p class="pino__frase">Diagnóstico</p>
-            <div class="pino__reguas"><i class="aceso"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
-          </div></div>
-          <div class="pino__estado" data-estado><div class="pino__marco">
-            <svg class="rodaMonta" viewBox="0 0 240 240" aria-hidden="true"><circle cx="120" cy="120" r="96" fill="none" stroke="currentColor" stroke-width="2" opacity="0.29"/><line x1="132.0" y1="132.0" x2="187.9" y2="187.9" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".85"/><line x1="108.0" y1="132.0" x2="52.1" y2="187.9" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".10"/><line x1="108.0" y1="108.0" x2="52.1" y2="52.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".10"/><line x1="132.0" y1="108.0" x2="187.9" y2="52.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".10"/><circle cx="120" cy="120" r="17" fill="var(--ciano-texto,#00B4FF)"/></svg>
-            <p class="pino__papel">Raio 1</p>
-            <p class="pino__frase">Posicionamento</p>
-            <div class="pino__reguas"><i class="aceso"></i><i class="aceso"></i><i class=""></i><i class=""></i><i class=""></i></div>
-          </div></div>
-          <div class="pino__estado" data-estado><div class="pino__marco">
-            <svg class="rodaMonta" viewBox="0 0 240 240" aria-hidden="true"><circle cx="120" cy="120" r="96" fill="none" stroke="currentColor" stroke-width="2" opacity="0.42"/><line x1="132.0" y1="132.0" x2="187.9" y2="187.9" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".85"/><line x1="108.0" y1="132.0" x2="52.1" y2="187.9" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".85"/><line x1="108.0" y1="108.0" x2="52.1" y2="52.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".10"/><line x1="132.0" y1="108.0" x2="187.9" y2="52.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".10"/><circle cx="120" cy="120" r="17" fill="var(--ciano-texto,#00B4FF)"/></svg>
-            <p class="pino__papel">Raio 2</p>
-            <p class="pino__frase">Conteúdo que atrai</p>
-            <div class="pino__reguas"><i class="aceso"></i><i class="aceso"></i><i class="aceso"></i><i class=""></i><i class=""></i></div>
-          </div></div>
-          <div class="pino__estado" data-estado><div class="pino__marco">
-            <svg class="rodaMonta" viewBox="0 0 240 240" aria-hidden="true"><circle cx="120" cy="120" r="96" fill="none" stroke="currentColor" stroke-width="2" opacity="0.55"/><line x1="132.0" y1="132.0" x2="187.9" y2="187.9" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".85"/><line x1="108.0" y1="132.0" x2="52.1" y2="187.9" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".85"/><line x1="108.0" y1="108.0" x2="52.1" y2="52.1" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".85"/><line x1="132.0" y1="108.0" x2="187.9" y2="52.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".10"/><circle cx="120" cy="120" r="17" fill="var(--ciano-texto,#00B4FF)"/></svg>
-            <p class="pino__papel">Raio 3</p>
-            <p class="pino__frase">Venda</p>
-            <div class="pino__reguas"><i class="aceso"></i><i class="aceso"></i><i class="aceso"></i><i class="aceso"></i><i class=""></i></div>
-          </div></div>
-          <div class="pino__estado" data-estado><div class="pino__marco">
-            <svg class="rodaMonta" viewBox="0 0 240 240" aria-hidden="true"><circle cx="120" cy="120" r="96" fill="none" stroke="currentColor" stroke-width="2" opacity="0.68"/><line x1="132.0" y1="132.0" x2="187.9" y2="187.9" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".85"/><line x1="108.0" y1="132.0" x2="52.1" y2="187.9" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".85"/><line x1="108.0" y1="108.0" x2="52.1" y2="52.1" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".85"/><line x1="132.0" y1="108.0" x2="187.9" y2="52.1" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".85"/><circle cx="120" cy="120" r="17" fill="var(--ciano-texto,#00B4FF)"/></svg>
-            <p class="pino__papel">Raio 4</p>
-            <p class="pino__frase">Jornada do consumidor</p>
-            <div class="pino__reguas"><i class="aceso"></i><i class="aceso"></i><i class="aceso"></i><i class="aceso"></i><i class="aceso"></i></div>
-          </div></div>
+  <section class="secao secao--portal tom-cinza" id="metodo" data-chao="#F2F5F9" data-tom="claro">
+    <!-- O PORTAL DO MÉTODO
+         A outra metade da história do espelho. Lá a roda aparece sem centro; aqui
+         o centro é a primeira coisa a existir, e cada raio se prende nele na
+         ordem em que a gente trabalha. A mesma mecânica, o argumento oposto. -->
+    <div class="portal" data-portal data-portal-passo="90">
+      <div class="portal__palco">
+        <div class="portal__bruma" aria-hidden="true"></div>
+        <svg class="roda roda--monta" viewBox="0 0 400 400" aria-hidden="true">
+          <circle class="roda__aro" cx="200" cy="200" r="150"/>
+          <g class="roda__raios">
+            <line class="roda__raio" style="--r:var(--r1,0)" x1="306.1" y1="306.1" x2="267.9" y2="267.9"/>
+            <line class="roda__raio" style="--r:var(--r2,0)" x1="93.9" y1="306.1" x2="132.1" y2="267.9"/>
+            <line class="roda__raio" style="--r:var(--r3,0)" x1="93.9" y1="93.9" x2="132.1" y2="132.1"/>
+            <line class="roda__raio" style="--r:var(--r4,0)" x1="306.1" y1="93.9" x2="267.9" y2="132.1"/>
+          </g>
+          <circle class="roda__brilho" cx="200" cy="200" r="96"/>
+          <circle class="roda__cubo" cx="200" cy="200" r="96"/>
+        </svg>
+        <div class="portal__luz" aria-hidden="true"></div>
+
+        <div class="portal__cena">
+          <p class="etiqueta">O método</p>
+          <h2 class="tela" style="margin-top:var(--s3);max-width:14ch">Cinco etapas. Uma ordem.</h2>
+          <p class="corpo corpo--g" style="margin-top:var(--s3);max-width:46ch;margin-inline:auto">O
+          Diagnóstico é o centro: é onde a gente mede onde a sua marca está antes de qualquer
+          investimento. As outras quatro são os raios que se prendem nele.</p>
+        </div>
+
+        <div class="portal__cena" data-roda="0">
+          <p class="etapa__papel">Centro</p>
+          <h3 class="tela tela--m" style="margin-top:var(--s2)">Diagnóstico.</h3>
+          <p class="corpo corpo--g" style="margin-top:var(--s3);max-width:42ch;margin-inline:auto">Onde a sua marca está hoje, medido antes de qualquer investimento.</p>
+          <ul class="etapa__itens" style="margin-top:var(--s4)"><li>Mapa mental ao vivo</li><li>Leitura dos canais</li><li>Ponto de partida escrito</li></ul>
+        </div>
+
+        <div class="portal__cena" data-roda="1">
+          <p class="etapa__papel">Raio 1</p>
+          <h3 class="tela tela--m" style="margin-top:var(--s2)">Posicionamento.</h3>
+          <p class="corpo corpo--g" style="margin-top:var(--s3);max-width:42ch;margin-inline:auto">Como a sua marca aparece quando alguém pesquisa antes de comprar.</p>
+          <ul class="etapa__itens" style="margin-top:var(--s4)"><li>Mensagem e promessa</li><li>Identidade</li><li>Vitrine digital</li></ul>
+        </div>
+
+        <div class="portal__cena" data-roda="2">
+          <p class="etapa__papel">Raio 2</p>
+          <h3 class="tela tela--m" style="margin-top:var(--s2)">Conteúdo que atrai.</h3>
+          <p class="corpo corpo--g" style="margin-top:var(--s3);max-width:42ch;margin-inline:auto">Como chega gente nova todo dia, com conteúdo e alcance.</p>
+          <ul class="etapa__itens" style="margin-top:var(--s4)"><li>Linha editorial</li><li>Roteiro e pauta</li><li>Ritmo de publicação</li></ul>
+        </div>
+
+        <div class="portal__cena" data-roda="3">
+          <p class="etapa__papel">Raio 3</p>
+          <h3 class="tela tela--m" style="margin-top:var(--s2)">Venda.</h3>
+          <p class="corpo corpo--g" style="margin-top:var(--s3);max-width:42ch;margin-inline:auto">Como interesse vira cliente, com estrutura e oferta certas.</p>
+          <ul class="etapa__itens" style="margin-top:var(--s4)"><li>Oferta e argumento</li><li>Caminho até o fechamento</li><li>Tráfego pago</li></ul>
+        </div>
+
+        <div class="portal__cena" data-roda="4">
+          <p class="etapa__papel">Raio 4</p>
+          <h3 class="tela tela--m" style="margin-top:var(--s2)">Jornada do consumidor.</h3>
+          <p class="corpo corpo--g" style="margin-top:var(--s3);max-width:42ch;margin-inline:auto">Como o resultado se sustenta, lido e ajustado todo mês.</p>
+          <ul class="etapa__itens" style="margin-top:var(--s4)"><li>Leitura mensal</li><li>Ajuste do que não performou</li><li>Você sabe onde está</li></ul>
         </div>
       </div>
     </div>
@@ -534,6 +525,11 @@
     2026 em Santo André, SP, com atendimento 100% remoto em todo o Brasil. CNPJ 65.180.563/0001-54.</p>
   </div>
 </footer>
+
+<!-- A barra de rolagem da casa. Ela substitui a do sistema em ponteiro fino:
+     é um mapa da página, com uma marca por seção e a marca da seção atual
+     acesa. Em toque não aparece, porque lá a barra nativa já some sozinha. -->
+<div class="rolagem" data-rolagem aria-hidden="true"><i class="rolagem__punho"></i></div>
 
 <script src="assets/js/luz.js"></script>
 <script src="assets/js/campo.js"></script>
