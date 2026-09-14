@@ -53,7 +53,8 @@ const cdp = (metodo, params = {}) => new Promise(k => {
 const larg = parseInt(LARG, 10);
 await cdp('Emulation.setDeviceMetricsOverride',
   { width: larg, height: Math.round(larg * (larg < 700 ? 2.05 : 0.62)), deviceScaleFactor: 2, mobile: larg < 700 });
-await cdp('Page.navigate', { url: `http://127.0.0.1:${PORTA}/${ARQ}` });
+// Caminho que já começa com http vai direto: serve para conferir o que está no ar.
+await cdp('Page.navigate', { url: /^https?:/.test(ARQ) ? ARQ : `http://127.0.0.1:${PORTA}/${ARQ}` });
 await new Promise(k => setTimeout(k, 1600));
 
 if (SELETOR) {
