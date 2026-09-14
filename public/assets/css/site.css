@@ -512,3 +512,66 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
 .pino__marco{max-width:100%}
 .pino__frase{max-width:none;overflow-wrap:break-word;hyphens:none}
 .pino__marco .pino__frase{font-size:clamp(1.6rem,3.4vw,2.7rem)}
+
+/* --------------------------------------------------------------------------
+   O campo · fundo vivo nas faixas de azul
+   Ruído em camadas derivando devagar, com vinheta e grão. O grão é o que faz
+   a superfície parecer material e não degradê de CSS.
+   Referência de técnica: fundos WebGL com simplex noise. O que é nosso é a
+   paleta (só azul, acento único) e a força baixa: tem que se notar no canto
+   do olho, nunca de frente.
+   -------------------------------------------------------------------------- */
+.campo{isolation:isolate;overflow:hidden}
+.rodape{position:relative}
+.campo__tela{
+  position:absolute;inset:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;display:block}
+.campo > .env{position:relative;z-index:2}
+
+/* --------------------------------------------------------------------------
+   A emenda · a passagem de uma faixa para a outra
+   O corte duro entre branco e azul-marinho denuncia que são dois blocos.
+   Esta faixa carrega a cor de cima por 130px para dentro da seção de baixo,
+   e a troca de tom vira travessia. O valor de --de entra pelo site.js, lido
+   do data-chao do irmão anterior, para não haver cor escrita duas vezes.
+   -------------------------------------------------------------------------- */
+.secao::before,.rodape::before{
+  content:"";position:absolute;left:0;right:0;top:0;
+  height:clamp(48px,5vw,80px);z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,var(--de,transparent) 0%,transparent 100%);
+  opacity:.5}
+/* Degradê linear entre duas claridades distantes passa por um meio lavado e
+   a faixa vira névoa. Estes passos desenham uma queda rápida no começo e
+   uma cauda longa, que é como a luz realmente se apaga. */
+@supports (background:linear-gradient(to bottom,color-mix(in srgb,#000 50%,transparent),transparent)){
+  .secao::before,.rodape::before{
+    background:linear-gradient(to bottom,
+      var(--de,transparent) 0%,
+      color-mix(in srgb,var(--de,transparent) 62%,transparent) 14%,
+      color-mix(in srgb,var(--de,transparent) 32%,transparent) 34%,
+      color-mix(in srgb,var(--de,transparent) 13%,transparent) 58%,
+      color-mix(in srgb,var(--de,transparent) 4%,transparent) 79%,
+      transparent 100%)}}
+.secao > *:not(.campo__tela),.rodape > *:not(.campo__tela){position:relative;z-index:2}
+.hero::before{display:none}
+
+/* --------------------------------------------------------------------------
+   O pop · o único micro-movimento do botão principal
+   Anel que abre e some no clique. Um gesto, num lugar só, no botão que é o
+   objetivo do site inteiro.
+   -------------------------------------------------------------------------- */
+.btn--primario{position:relative;
+  transition:background var(--medio),transform 160ms cubic-bezier(.34,1.56,.64,1),box-shadow var(--medio)}
+.btn--primario::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;
+  border:1px solid var(--ciano);opacity:0;pointer-events:none}
+.btn--primario:hover{transform:translateY(-1px);box-shadow:0 8px 24px -10px rgba(0,180,255,.55)}
+.btn--primario:active{transform:translateY(0) scale(.975)}
+.btn--primario:active::after{animation:pop 480ms ease-out}
+@keyframes pop{
+  0%{opacity:.85;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.28)}}
+@media (prefers-reduced-motion:reduce){
+  .btn--primario{transition:background var(--medio)}
+  .btn--primario:hover,.btn--primario:active{transform:none}
+  .btn--primario:active::after{animation:none}}

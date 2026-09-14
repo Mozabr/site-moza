@@ -134,3 +134,30 @@
     });
   });
 })();
+
+/* ==========================================================================
+   A emenda e o campo
+   Rodam depois do site.js principal para já encontrar o DOM montado.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  /* A emenda lê a cor do irmão de cima. Assim a passagem entre faixas se
+     corrige sozinha se a ordem das seções mudar, e nenhuma cor fica escrita
+     em dois lugares. */
+  [].slice.call(document.querySelectorAll('.secao,.rodape')).forEach(function (s) {
+    var ant = s.previousElementSibling;
+    /* O rodapé vem depois do <main>: o vizinho real dele é a última faixa
+       lá dentro, não o main. */
+    if (ant && !ant.hasAttribute('data-chao')) {
+      var d = ant.querySelectorAll('[data-chao]');
+      ant = d.length ? d[d.length - 1] : null;
+    }
+    var de = ant && ant.getAttribute('data-chao');
+    if (de) s.style.setProperty('--de', de);
+  });
+
+  if (window.CampoMoza) {
+    [].slice.call(document.querySelectorAll('[data-campo]')).forEach(window.CampoMoza);
+  }
+})();
