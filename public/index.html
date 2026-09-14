@@ -95,11 +95,45 @@
   </section>
 
   <!-- O ESPELHO · narrativa do carrossel 02/05 -->
-  <section class="secao tom-cinza" data-chao="#F2F5F9" data-tom="claro">
-    <div class="env">
-      <div class="centro entra">
-        <p class="etiqueta">O espelho</p>
-        <h2 class="tela" style="margin-top:var(--s3);max-width:13ch">Toda roda tem raios.</h2>
+  <section class="secao secao--portal tom-cinza" data-chao="#F2F5F9" data-tom="claro">
+    <!-- O PORTAL
+         A seção abre no M e mais nada. A rolagem traz ele de longe, ele passa
+         por cima da câmera e sai de quadro, e o texto nasce da profundidade de
+         onde ele veio. É a entrada do visitante no argumento. -->
+    <div class="portal" data-portal>
+      <div class="portal__palco">
+        <div class="portal__bruma" aria-hidden="true"></div>
+        <svg class="marcaM portal__m" viewBox="0 0 1081 613" aria-hidden="true">
+          <!-- Os gradientes moram aqui porque o portal existe em toda tela. No
+               objeto travado eles sumiam no celular, que o esconde com
+               display:none, e o M ficava sem tinta. -->
+          <defs>
+            <linearGradient id="aco" x1="0" y1="0" x2=".85" y2="1">
+              <stop offset="0" stop-color="#093F70"/>
+              <stop offset=".20" stop-color="#2E9BE0"/>
+              <stop offset=".40" stop-color="#DCEEFF"/>
+              <stop offset=".54" stop-color="#1B7CC4"/>
+              <stop offset=".76" stop-color="#0A5591"/>
+              <stop offset="1" stop-color="#08365F"/>
+            </linearGradient>
+            <linearGradient id="acoClaro" x1="0" y1="0" x2=".85" y2="1">
+              <stop offset="0" stop-color="#062A4E"/>
+              <stop offset=".20" stop-color="#1272B8"/>
+              <stop offset=".40" stop-color="#8FCBF2"/>
+              <stop offset=".54" stop-color="#0E5C9B"/>
+              <stop offset=".76" stop-color="#073E6D"/>
+              <stop offset="1" stop-color="#052842"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#aco)" d="M 0,450.56 L 31.88,568.97 L 398.88,191.66 L 539.22,613 L 922.62,190.09 L 1003.79,481.69 L 1081,402.96 L 968.23,0 L 783.86,186.18 L 577.65,417.39 L 441.47,2.66 Z"/>
+        </svg>
+        <div class="portal__luz" aria-hidden="true"></div>
+        <div class="portal__miolo">
+          <p class="etiqueta">O espelho</p>
+          <h2 class="tela" style="margin-top:var(--s3);max-width:13ch">Toda roda tem raios.</h2>
+          <p class="corpo corpo--g" style="margin-top:var(--s3);max-width:42ch;margin-inline:auto">Você
+          sobe campanha, o clique vem, o cliente não. O problema quase nunca está no criativo.</p>
+        </div>
       </div>
     </div>
     <div class="env duplo__grade" data-duplo style="margin-top:clamp(var(--s5),8vw,var(--s6))">
@@ -119,35 +153,12 @@
           <p class="corpo">Ninguém construiu a peça que segura tudo. Sem ela a roda gira, gasta
           verba, e não sai do lugar.</p>
         </article>
-        <div class="soMovel" aria-hidden="true">
-          <svg class="marcaM" viewBox="0 0 1081 613">
-            <path fill="url(#aco)" d="M 0,450.56 L 31.88,568.97 L 398.88,191.66 L 539.22,613 L 922.62,190.09 L 1003.79,481.69 L 1081,402.96 L 968.23,0 L 783.86,186.18 L 577.65,417.39 L 441.47,2.66 Z"/>
-          </svg>
-        </div>
       </div>
       <div class="duplo__pino" aria-hidden="true">
         <div class="pino__quadro">
           <div class="pino__estado" data-estado><p class="pino__frase">Troca<br><em>o criativo.</em></p></div>
           <div class="pino__estado" data-estado><p class="pino__frase">A roda<br><em>segue bamba.</em></p></div>
           <div class="pino__estado" data-estado><div class="pino__emergindo"><svg class="marcaM" viewBox="0 0 1081 613" role="img" aria-label="Símbolo da Moza">
-            <defs>
-              <linearGradient id="aco" x1="0" y1="0" x2=".85" y2="1">
-                <stop offset="0" stop-color="#093F70"/>
-                <stop offset=".20" stop-color="#2E9BE0"/>
-                <stop offset=".40" stop-color="#DCEEFF"/>
-                <stop offset=".54" stop-color="#1B7CC4"/>
-                <stop offset=".76" stop-color="#0A5591"/>
-                <stop offset="1" stop-color="#08365F"/>
-              </linearGradient>
-              <linearGradient id="acoClaro" x1="0" y1="0" x2=".85" y2="1">
-                <stop offset="0" stop-color="#062A4E"/>
-                <stop offset=".20" stop-color="#1272B8"/>
-                <stop offset=".40" stop-color="#8FCBF2"/>
-                <stop offset=".54" stop-color="#0E5C9B"/>
-                <stop offset=".76" stop-color="#073E6D"/>
-                <stop offset="1" stop-color="#052842"/>
-              </linearGradient>
-            </defs>
             <path fill="url(#aco)" d="M 0,450.56 L 31.88,568.97 L 398.88,191.66 L 539.22,613 L 922.62,190.09 L 1003.79,481.69 L 1081,402.96 L 968.23,0 L 783.86,186.18 L 577.65,417.39 L 441.47,2.66 Z"/>
           </svg></div></div>
         </div>

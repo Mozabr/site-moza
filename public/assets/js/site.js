@@ -161,3 +161,62 @@
     [].slice.call(document.querySelectorAll('[data-campo]')).forEach(window.CampoMoza);
   }
 })();
+
+/* ==========================================================================
+   O portal
+   Uma variável de rolagem (0 a 1) alimenta todas as camadas do palco. O M
+   anda em linha reta no eixo Z e a perspectiva faz a aceleração sozinha, que
+   é o que separa aproximação de câmera de crescimento de keyframe.
+   ========================================================================== */
+(function () {
+  'use strict';
+  var trilho = document.querySelector('[data-portal]');
+  if (!trilho) return;
+  var palco = trilho.querySelector('.portal__palco');
+  if (!palco) return;
+
+  function fatia(v, a, b) { return Math.min(1, Math.max(0, (v - a) / (b - a))); }
+  function suave(t) { return t * t * (3 - 2 * t); }
+  function po(n, v) { palco.style.setProperty(n, v); }
+
+  function pintar(p) {
+    /* O M: caminho reto de longe (-500) até passar a câmera (1020). A curva
+       de tamanho é a perspectiva, não uma função escrita aqui. */
+    var z = -500 + Math.pow(fatia(p, 0, .54), 1.22) * 1520;
+    po('--mZ', z.toFixed(1));
+    po('--mOp', (1 - fatia(z, 600, 1005)).toFixed(3));
+    po('--mBorr', (fatia(z, 470, 1020) * 13).toFixed(2));
+
+    /* O texto vem do mesmo longe de onde o M saiu, com foco chegando junto. */
+    var t = suave(fatia(p, .30, .80));
+    po('--tZ', (-1600 + t * 1600).toFixed(1));
+    po('--tOp', fatia(t, 0, .40).toFixed(3));
+    po('--tBorr', ((1 - fatia(t, 0, .60)) * 16).toFixed(2));
+
+    /* O estouro de luz na passagem, para a troca ter um momento e não um corte. */
+    po('--luz', (suave(Math.max(0, 1 - Math.abs(p - .47) / .17)) * .8).toFixed(3));
+  }
+
+  palco.classList.add('portal--vivo');
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { pintar(1); return; }
+
+  var pedido = 0, naTela = true;
+  function medir() {
+    pedido = 0;
+    var r = trilho.getBoundingClientRect();
+    var curso = r.height - window.innerHeight;
+    pintar(curso <= 0 ? 1 : Math.min(1, Math.max(0, -r.top / curso)));
+  }
+  function agendar() { if (!pedido && naTela) pedido = requestAnimationFrame(medir); }
+
+  new IntersectionObserver(function (e) {
+    naTela = e[0].isIntersecting;
+    agendar();
+    if (!naTela) medir();          // deixa o último quadro certo ao sair de vista
+  }, { rootMargin: '150px' }).observe(trilho);
+
+  window.addEventListener('scroll', agendar, { passive: true });
+  window.addEventListener('resize', agendar);
+  medir();
+})();

@@ -575,3 +575,69 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
   .btn--primario{transition:background var(--medio)}
   .btn--primario:hover,.btn--primario:active{transform:none}
   .btn--primario:active::after{animation:none}}
+
+/* --------------------------------------------------------------------------
+   O portal · a entrada da seção do espelho
+   A seção abre no M e mais nada. A rolagem traz ele de longe, ele cresce até
+   passar por cima da câmera, e o texto nasce da profundidade de onde ele veio.
+
+   A escala do M não é escrita à mão: ele anda em linha reta no eixo Z e quem
+   faz a aceleração é a perspectiva. É por isso que a aproximação parece de
+   câmera e não de keyframe.
+
+   Sem JS a classe portal--vivo nunca entra e o palco fica parado com o texto
+   legível. O argumento continua de pé.
+   -------------------------------------------------------------------------- */
+.secao--portal{padding-top:clamp(var(--s3),3vw,var(--s5))}
+
+.portal{position:relative;height:260svh;
+  margin-bottom:clamp(var(--s4),5vw,var(--s6))}
+.portal__palco{position:sticky;top:0;height:100svh;overflow:hidden;
+  display:grid;place-items:center;
+  perspective:1200px;perspective-origin:50% 46%}
+.portal__palco > *{grid-area:1/1}
+
+/* Boca de túnel: o canto fecha um pouco para o meio virar o longe. */
+.portal__bruma{width:100%;height:100%;pointer-events:none;
+  background:radial-gradient(ellipse 76% 62% at 50% 46%,
+    transparent 36%,rgba(14,52,92,.10) 100%)}
+
+.portal__m{width:min(72vw,820px);max-width:none;height:auto;
+  transform-origin:50% 50%;will-change:transform,opacity,filter}
+/* A sombra do M custa caro quando ele cresce sete vezes: um desfoque de 46px
+   vira 320px de raio. A profundidade já vem do foco, então ela sai. Precisa
+   vencer a regra de tom, que também escreve filter. */
+.tom-claro .portal__m path,.tom-cinza .portal__m path{filter:none}
+
+.portal__luz{width:min(64vw,720px);aspect-ratio:1;border-radius:50%;
+  pointer-events:none;opacity:0;
+  background:radial-gradient(circle,rgba(0,180,255,.42) 0%,rgba(0,180,255,.14) 38%,rgba(0,180,255,0) 68%)}
+
+.portal__miolo{max-width:min(92vw,54ch);text-align:center;
+  will-change:transform,opacity,filter}
+.portal__miolo .etiqueta{justify-content:center}
+
+.portal--vivo .portal__m{
+  transform:translateZ(calc(var(--mZ,0) * 1px));
+  opacity:var(--mOp,1);
+  filter:blur(calc(var(--mBorr,0) * 1px))}
+.portal--vivo .portal__luz{opacity:var(--luz,0)}
+.portal--vivo .portal__miolo{
+  transform:translateZ(calc(var(--tZ,0) * 1px));
+  opacity:var(--tOp,1);
+  filter:blur(calc(var(--tBorr,0) * 1px))}
+
+@media (max-width:899px){
+  .portal{height:220svh}
+  .portal__m{width:86vw}
+}
+@media (prefers-reduced-motion:reduce){
+  .portal{height:auto}
+  .portal__palco{position:static;height:auto;
+    padding-block:clamp(var(--s5),8vw,var(--s7))}
+  .portal__m{width:min(60vw,420px)}
+  .portal__palco{display:block;text-align:center}
+  .portal__palco > *{grid-area:auto}
+  .portal__bruma,.portal__luz{display:none}
+  .portal__miolo{margin-top:var(--s5);margin-inline:auto}
+}

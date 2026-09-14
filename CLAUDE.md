@@ -80,6 +80,33 @@ Cada tópico tem cor própria, **toda dentro da família do azul**: `#0071AD`,
 `#0096DC`, `#00B4FF`. Dá vida sem abrir um segundo acento, que o brandbook
 proíbe. Hue estranho (laranja, roxo como a Apple usa) quebraria a regra.
 
+## O portal (abertura do espelho)
+
+A seção do espelho abre no M e mais nada. A rolagem traz ele de longe, ele
+cresce até passar por cima da câmera, e o texto nasce da profundidade de onde
+ele veio.
+
+A escala do M **não é escrita à mão**. Ele anda em linha reta no eixo Z
+(`translateZ`, de -500px a 1020px) e quem faz a aceleração é a perspectiva de
+1200px do palco. É por isso que a aproximação parece de câmera e não de
+keyframe: a curva é a hipérbole `1200/(1200-z)`, de graça.
+
+Uma variável só (`--p`, a fração rolada do trilho) alimenta todas as camadas,
+pelo `site.js`. Sem JS a classe `portal--vivo` nunca entra e o palco fica
+parado com o texto legível.
+
+Não pôr `overflow:hidden` no trilho (`.portal`): mata o `sticky` do palco. Ele
+vai no palco, que é o próprio elemento travado, e é o que segura o M gigante
+dentro da tela.
+
+## Gradiente de SVG mora em SVG que sempre existe
+
+Os `<linearGradient>` do M ficam no `<svg>` do **portal**, não no do objeto
+travado. O objeto travado é `display:none` abaixo de 900px, e um paint server
+dentro de subárvore escondida não resolve: o path fica sem tinta e o M
+simplesmente não aparece. Isso pegava todo visitante de celular, que é a
+maioria. Se mover os defs de novo, conferir em 393px antes de subir.
+
 ## Armadilha da sonda de QA
 
 Alvo de toque se mede por `offsetWidth`/`offsetHeight`, **nunca** por
