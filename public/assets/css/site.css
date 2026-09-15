@@ -600,8 +600,8 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
 .portal__palco > .portal__bruma,.portal__palco > .portal__luz{display:none}
 .portal__palco > .portal__cena{margin-inline:auto;
   padding-block:clamp(var(--s4),5vw,var(--s6))}
-.portal__palco > .roda{width:min(62vw,380px)}
-.portal__palco > .portal__m{width:min(52vw,420px)}
+.portal__palco:not(.portal--vivo) > .roda{width:min(62vw,380px)}
+.portal__palco:not(.portal--vivo) > .portal__m{width:min(52vw,420px)}
 .portal__palco > .roda,.portal__palco > .portal__m{
   margin:0 auto clamp(var(--s4),5vw,var(--s6))}
 
@@ -634,6 +634,24 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
   filter:blur(calc(var(--mBorr,0) * 1px))}
 .portal--vivo .portal__luz{opacity:var(--luz,0)}
 
+/* No desktop a informação fica de um lado e o objeto do outro, que é o pedido
+   antigo do Kauan. Agora a roda tem peso para sustentar essa metade. */
+@media (min-width:900px){
+  .portal--vivo{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center}
+  .portal--vivo > .portal__cena{grid-area:1/1;justify-self:end;text-align:left;
+    max-width:42ch;padding-inline:var(--s5) var(--s4)}
+  .portal--vivo > .portal__cena .etiqueta,
+  .portal--vivo > .portal__cena .etapa__papel{justify-content:flex-start;text-align:left}
+  .portal--vivo > .portal__cena .etapa__itens{justify-content:flex-start}
+  .portal--vivo > .portal__cena h2,
+  .portal--vivo > .portal__cena h3,
+  .portal--vivo > .portal__cena p{margin-inline:0}
+  .portal--vivo > .roda{grid-area:1/2;justify-self:start;margin-left:-7%}
+  .portal--vivo > .portal__m,
+  .portal--vivo > .portal__bruma,
+  .portal--vivo > .portal__luz{grid-area:1/1/2/3;justify-self:center}
+}
+
 @media (max-width:899px){
   .portal__m{width:86vw}
   /* No celular a roda não cerca o texto: ela vira objeto acima dele. Um círculo
@@ -641,7 +659,7 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
      largura, e o anel acabaria cortando a frase. Duas linhas resolvem. */
   .portal--vivo{grid-template-rows:auto auto;
     align-content:center;justify-items:center;gap:clamp(var(--s3),5vw,var(--s5))}
-  .portal--vivo > .roda{grid-area:1/1;align-self:end;width:min(56vw,270px)}
+  .portal--vivo > .roda{grid-area:1/1;align-self:end;width:min(74vw,340px)}
   .portal--vivo > .portal__cena{grid-area:2/1;align-self:start}
   .portal--vivo > .portal__m,
   .portal--vivo > .portal__bruma,
@@ -668,45 +686,79 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
 
 /* --------------------------------------------------------------------------
    A roda
-   Um componente, dois argumentos. No espelho ela aparece sem centro: os raios
-   se desenham, tremem, e o meio segue oco. No método o centro é a primeira
-   coisa a existir e cada raio se prende nele.
+   Feita a partir da roda de F1 que o Kauan mandou de referência. O que veio de
+   lá é a proporção (pneu gordo, aro pequeno), a lâmina de raio que afina no
+   cubo e engorda no aro, o disco furado por trás, e a faixa de cor na lateral
+   do pneu. O que é nosso é a faixa em ciano e nenhuma marca escrita nela.
 
-   Os raios nascem da ponta por stroke-dashoffset, que é como linha se desenha
-   de verdade. O comprimento de 112 é a distância do cubo ao aro no viewBox.
+   Oito raios em quatro pares opostos, um par por raio do método. Roda se
+   aperta par a par, nunca raio a raio, então cada etapa fecha um par e a roda
+   fica equilibrada em todo passo da montagem.
+
+   Um componente, dois argumentos. No espelho ela monta sem cubo, treme, mostra
+   o vazio no meio e sai de tela rolando para a direita. No método o cubo é a
+   primeira peça e cada etapa prende um par nele, até a roda ficar inteira.
    -------------------------------------------------------------------------- */
-.roda{width:min(96vw,1240px);height:auto;color:var(--claro);
-  pointer-events:none;opacity:.62}
-.roda__aro{fill:none;stroke:currentColor;stroke-width:1.2;opacity:.20;
-  stroke-dasharray:942.5;stroke-dashoffset:calc((1 - var(--a,0)) * 942.5px);
-  transform:rotate(-90deg);transform-origin:200px 200px}
-.roda__raios{transform-origin:200px 200px}
-/* O raio nasce preso no aro e cresce para dentro. Ele para bem antes do meio:
-   o miolo é onde o texto mora, e raio cruzando frase vira risco de caneta. */
-.roda__raio{stroke:currentColor;stroke-width:2.5;stroke-linecap:round;
-  stroke-dasharray:54;stroke-dashoffset:calc((1 - var(--r,0)) * 54px);
-  opacity:calc(.14 + var(--r,0) * .56)}
-.roda__cubo{fill:none;stroke:var(--ciano);stroke-width:2.5;
-  transform-origin:200px 200px;
-  transform:scale(calc(.72 + var(--cubo,0) * .28));
-  opacity:calc(var(--cubo,0) * .78)}
-.roda__brilho{fill:var(--ciano);transform-origin:200px 200px;
-  transform:scale(calc(.5 + var(--cubo,0) * .5));
-  opacity:calc(var(--cubo,0) * .07);filter:blur(26px)}
-/* O oco: o centro que ninguém construiu. Tracejado porque é ausência, não peça. */
-.roda__oco{fill:none;stroke:var(--ciano);stroke-width:2.5;stroke-dasharray:3 11;
-  stroke-linecap:round;opacity:calc(var(--oco,0) * .8);
-  transform-origin:200px 200px;transform:scale(calc(.72 + var(--oco,0) * .28))}
+.roda{width:min(54vw,780px);height:auto;pointer-events:none;overflow:visible;
+  --pneu:1;--faixa:1;--a:1;--r1:1;--r2:1;--r3:1;--r4:1;--cubo:1;--oco:1;--sai:0}
+.roda__corpo{transform-origin:230px 230px;
+  transform:translateX(calc(var(--sai,0) * 760px)) rotate(calc(var(--sai,0) * 430deg))}
 
-.roda.tremendo .roda__raios{animation:bamba 2.1s ease-in-out infinite}
+/* O pneu se enrola no aro: traço grosso que vai fechando a volta. */
+.roda__pneu{fill:none;stroke:url(#pneuG);stroke-width:62;
+  stroke-dasharray:1220;stroke-dashoffset:calc((1 - var(--pneu,0)) * 1220px);
+  transform:rotate(-90deg);transform-origin:230px 230px}
+/* O brilho que corre no ombro do pneu. Sem ele a borracha fica de papel. */
+.roda__sulco{fill:none;stroke:rgba(214,230,244,.30);stroke-width:1.4;
+  stroke-dasharray:1332;stroke-dashoffset:calc((1 - var(--pneu,0)) * 1332px);
+  transform:rotate(-90deg);transform-origin:230px 230px}
+
+.roda__faixa{fill:none;stroke:var(--ciano);stroke-width:9;stroke-linecap:butt;
+  stroke-dasharray:310;stroke-dashoffset:calc((1 - var(--faixa,0)) * 310px);
+  opacity:.92}
+
+.roda__poco{fill:url(#pocoG)}
+.roda--monta .roda__poco{opacity:var(--cubo,0)}
+.roda--oca .roda__poco{opacity:calc(var(--a,0) * var(--a,0))}
+.roda__disco{fill:url(#discoG)}
+.roda__furos{fill:none;stroke:rgba(8,12,16,.85);stroke-width:5.5;
+  stroke-dasharray:3 10;stroke-linecap:round}
+.roda--oca .roda__disco,.roda--oca .roda__furos{display:none}
+.roda--monta .roda__disco,.roda--monta .roda__furos{
+  opacity:var(--cubo,0);transform-origin:230px 230px;
+  transform:scale(calc(.86 + var(--cubo,0) * .14))}
+
+.roda__aro{fill:none;stroke:url(#aroG);stroke-width:11;
+  stroke-dasharray:993;stroke-dashoffset:calc((1 - var(--a,0)) * 993px);
+  transform:rotate(-90deg);transform-origin:230px 230px}
+
+/* O par entra girando um pouco e assenta. É o gesto de encaixar, não de surgir. */
+.roda__par{transform-origin:230px 230px;
+  transform:rotate(calc((1 - var(--r,0)) * -13deg));
+  opacity:var(--r,0)}
+.roda__raio{fill:url(#raioG)}
+
+.roda__cubo{fill:#141A20;transform-origin:230px 230px;
+  transform:scale(calc(.7 + var(--cubo,0) * .3));opacity:var(--cubo,0)}
+.roda__porca{fill:url(#porcaG);transform-origin:230px 230px;
+  transform:scale(calc(.4 + var(--cubo,0) * .6));opacity:var(--cubo,0)}
+
+/* O centro que ninguém construiu. Tracejado porque é ausência, não peça. */
+.roda__oco{fill:none;stroke:var(--ciano);stroke-width:3;stroke-dasharray:3 12;
+  stroke-linecap:round;opacity:calc(var(--oco,0) * .9);
+  transform-origin:230px 230px;transform:scale(calc(.62 + var(--oco,0) * .38))}
+
+.roda.tremendo{animation:bamba 2.1s ease-in-out infinite;
+  transform-origin:50% 50%}
 @keyframes bamba{
   0%,100%{transform:rotate(0deg)}
-  26%{transform:rotate(2.4deg)}
-  58%{transform:rotate(-1.7deg)}
-  80%{transform:rotate(.9deg)}}
+  26%{transform:rotate(1.8deg)}
+  58%{transform:rotate(-1.3deg)}
+  80%{transform:rotate(.7deg)}}
 @media (prefers-reduced-motion:reduce){
-  .roda.tremendo .roda__raios{animation:none}
+  .roda.tremendo{animation:none}
 }
+
 
 /* --------------------------------------------------------------------------
    A barra de rolagem da casa

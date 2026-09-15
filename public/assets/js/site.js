@@ -231,23 +231,30 @@
 
       if (!roda) return;
       if (monta) {
-        /* O método: o centro primeiro, na vaga 1, e cada raio se prendendo nele
-           na vaga da sua etapa. É a ordem em que a gente trabalha. */
+        /* O método monta a roda na ordem em que a gente trabalha: o cubo
+           primeiro, cada etapa prende um par de raios nele, e o pneu entra por
+           último, na Jornada, que é a etapa de sustentar o resultado. */
         po(roda, '--cubo', suave(fatia(p, s * 1.05, s * 1.75)).toFixed(3));
-        po(roda, '--a', suave(fatia(p, s * 1.2, s * (vagas - .2))).toFixed(3));
+        po(roda, '--a',    suave(fatia(p, s * 2.0,  s * 5.4)).toFixed(3));
         for (var k = 0; k < 4; k++) {
           po(roda, '--r' + (k + 1),
-             suave(fatia(p, s * (k + 2.05), s * (k + 2.7))).toFixed(3));
+             suave(fatia(p, s * (k + 2.05), s * (k + 2.65))).toFixed(3));
         }
+        po(roda, '--pneu',  suave(fatia(p, s * 5.15, s * 5.75)).toFixed(3));
+        po(roda, '--faixa', suave(fatia(p, s * 5.45, s * 5.9)).toFixed(3));
       } else {
-        /* O espelho: os raios aparecem sozinhos na vaga 1, tremem na vaga 2, e
-           na vaga 3 o meio se revela oco. O centro nunca vem, que é o ponto. */
-        po(roda, '--a', suave(fatia(p, s * 2.0, s * 3.0)).toFixed(3));
+        /* O espelho monta a roda inteira menos o cubo, faz ela tremer, mostra
+           o buraco no meio e manda ela embora rolando para a direita. */
+        po(roda, '--cubo', '0');
+        po(roda, '--pneu',  suave(fatia(p, s * 2.0,  s * 2.6)).toFixed(3));
+        po(roda, '--a',     suave(fatia(p, s * 2.15, s * 2.7)).toFixed(3));
         for (var j = 0; j < 4; j++) {
           po(roda, '--r' + (j + 1),
-             suave(fatia(p, s * (2.05 + j * .2), s * (2.5 + j * .2))).toFixed(3));
+             suave(fatia(p, s * (2.25 + j * .12), s * (2.6 + j * .12))).toFixed(3));
         }
-        po(roda, '--oco', suave(fatia(p, s * 4.1, s * 4.6)).toFixed(3));
+        po(roda, '--faixa', suave(fatia(p, s * 2.5, s * 2.95)).toFixed(3));
+        po(roda, '--oco',   suave(fatia(p, s * 4.1, s * 4.5)).toFixed(3));
+        po(roda, '--sai',   suave(fatia(p, .90, 1)).toFixed(3));
         roda.classList.toggle('tremendo', !calmo && p > s * 3.0 && p < s * 4.05);
       }
     }

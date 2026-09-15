@@ -68,8 +68,8 @@ await new Promise(k => setTimeout(k, 700));
 if (SELETOR) {
   // Número puro rola até aquela altura; o resto é seletor.
   const expr = /^\d+$/.test(SELETOR)
-    ? `window.scrollTo(0,${SELETOR})`
-    : `document.querySelector(${JSON.stringify(SELETOR)})?.scrollIntoView({block:'start'})`;
+    ? `window.scrollTo({top:${SELETOR},behavior:'instant'})`
+    : `document.querySelector(${JSON.stringify(SELETOR)})?.scrollIntoView({block:'start',behavior:'instant'})`;
   await cdp('Runtime.evaluate', { expression: expr });
   await new Promise(k => setTimeout(k, process.env.MOZA_GL ? 3000 : 1500));
 }

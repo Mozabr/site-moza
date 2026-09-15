@@ -107,16 +107,28 @@ vai no palco, que é o próprio elemento travado.
 
 ### A roda, um componente e dois argumentos
 
-No espelho ela aparece **sem centro**: os raios se desenham, tremem, e o meio
-segue oco (anel tracejado em ciano). No método o **centro é a primeira coisa a
-existir** e cada raio se prende nele na ordem em que a gente trabalha. É a
-mesma peça contando metades opostas da história.
+Feita a partir de uma roda de F1 que o Kauan mandou de referência (12/09/2026).
+O que veio de lá: a proporção (pneu gordo, aro pequeno), a lâmina de raio que
+afina no cubo e engorda no aro, o disco furado por trás, e a faixa de cor na
+lateral do pneu. **O que é nosso: a faixa é ciano e não tem marca de ninguém
+escrita nela.** Nada de Pirelli, Enkei ou Brembo no desenho, que seria marca de
+terceiro num site comercial.
 
-Os raios nascem presos no aro e crescem para dentro, parando em `r=96`, que é
-exatamente onde mora o anel do centro. O miolo fica livre porque é lá que o
-texto senta: raio cruzando frase vira risco de caneta. No celular isso não
-cabe (círculo que abrace um bloco alto não entra em 393px), e a roda vira
-objeto acima do texto, em duas linhas de grade.
+Oito raios em quatro pares opostos, um par por raio do método. Roda se aperta
+par a par, nunca raio a raio, então cada etapa fecha um par e a roda fica
+equilibrada em todo passo da montagem.
+
+No **espelho** ela monta sem cubo (`.roda--oca`): pneu, aro, raios, faixa. Os
+raios terminam no ar, o meio fica marcado por um anel tracejado em ciano, ela
+treme, e no fim sai de tela rolando para a direita (`--sai`). No **método**
+(`.roda--monta`) o cubo é a primeira peça, cada etapa prende um par nele, e o
+pneu entra por último, na Jornada, que é a etapa de sustentar o resultado.
+
+O `.roda__poco` é o fundo escuro entre os raios. Sem ele a roda vira aro com
+palitos e o fundo da página vaza pelo meio.
+
+O desenho sai de `ferramentas/roda.py` (gerador). Mexeu na geometria? Rode o
+gerador e troque os dois `<svg class="roda ...">` do index.
 
 ## A barra de rolagem da casa
 
@@ -134,6 +146,14 @@ travado. O objeto travado é `display:none` abaixo de 900px, e um paint server
 dentro de subárvore escondida não resolve: o path fica sem tinta e o M
 simplesmente não aparece. Isso pegava todo visitante de celular, que é a
 maioria. Se mover os defs de novo, conferir em 393px antes de subir.
+
+## O site rola suave, a sonda não pode
+
+`html` tem `scroll-behavior:smooth`. Qualquer `scrollTo` de ferramenta precisa
+de `behavior:'instant'`, senão a captura sai de um ponto do caminho em vez do
+destino e você passa a tarde caçando um defeito que não existe. Isso já custou
+tempo duas vezes: uma culpando imagem que carrega tarde, outra achando que a
+animação não chegava ao fim.
 
 ## Armadilha da sonda de QA
 
