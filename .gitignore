@@ -7,3 +7,7 @@ node_modules/
 /*.png
 .vercel/
 .vercel
+Fontes/*
+fontes/*
+!Fontes/LEIA-ME.md
+!fontes/LEIA-ME.md

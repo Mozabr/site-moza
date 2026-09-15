@@ -58,9 +58,17 @@
 
   <!-- HERO · a luz -->
   <section class="hero tom-preto" data-hero data-chao="#05070A" data-tom="escuro">
+    <!-- Textura do hero: foto de Jonathan Borba no Pexels (licença Pexels, uso
+         comercial liberado). Enquadrada na roda e na asa, e com as marcas de
+         patrocínio apagadas na própria imagem: aws, hp e a escrita da
+         carenagem saíram por desfoque local. O original está em fontes/. -->
     <picture class="hero__textura" aria-hidden="true">
-      <source type="image/webp" srcset="assets/img/obra/patio-drone-1024.webp">
-      <img src="assets/img/obra/patio-drone-1024.jpg" alt="" width="1080" height="1920" fetchpriority="high" decoding="async">
+      <source type="image/webp"
+        srcset="assets/img/hero/pista-1024.webp 1024w, assets/img/hero/pista-1600.webp 1600w, assets/img/hero/pista-2400.webp 2400w"
+        sizes="100vw">
+      <img src="assets/img/hero/pista-1600.jpg"
+        srcset="assets/img/hero/pista-1024.jpg 1024w, assets/img/hero/pista-1600.jpg 1600w, assets/img/hero/pista-2400.jpg 2400w"
+        sizes="100vw" alt="" width="2400" height="1350" fetchpriority="high" decoding="async">
     </picture>
     <div class="marca" data-marca>
       <div class="marca__camada marca__camada--base" aria-hidden="true">
@@ -105,30 +113,55 @@
       <div class="portal__palco">
         <div class="portal__bruma" aria-hidden="true"></div>
         <svg class="roda roda--oca" viewBox="0 0 460 460" aria-hidden="true">
+          <ellipse class="roda__chao" cx="230" cy="430" rx="170" ry="20"/>
           <g class="roda__corpo">
             <circle class="roda__pneu" cx="230" cy="230" r="194"/>
-            <circle class="roda__sulco" cx="230" cy="230" r="212"/>
+            <circle class="roda__flanco" cx="230" cy="230" r="172"/>
+            <circle class="roda__flanco" cx="230" cy="230" r="182"/>
+            <circle class="roda__flanco" cx="230" cy="230" r="206"/>
+            <circle class="roda__flanco" cx="230" cy="230" r="216"/>
+            <path class="roda__brilhoPneu" d="M20.1,237.3 A210.0,210.0 0 0 1 200.8,22.0"/>
+            <path class="roda__recorte" d="M446.9,260.5 A219.0,219.0 0 0 1 290.4,440.5"/>
+            <circle class="roda__oclusao" cx="230" cy="230" r="166"/>
             <path class="roda__faixa" d="M43.5,176.5 A194.0,194.0 0 0 1 308.9,52.8"/>
             <path class="roda__faixa" d="M398.0,133.0 A194.0,194.0 0 0 1 308.9,407.2"/>
             <circle class="roda__poco" cx="230" cy="230" r="152"/>
             <circle class="roda__disco" cx="230" cy="230" r="118"/>
-            <circle class="roda__furos" cx="230" cy="230" r="96"/>
+            <circle class="roda__furos" cx="230" cy="230" r="98"/>
+            <circle class="roda__discoBorda" cx="230" cy="230" r="118"/>
             <circle class="roda__aro" cx="230" cy="230" r="158"/>
+            <path class="roda__aroLuz" d="M72.9,213.5 A158.0,158.0 0 0 1 224.5,72.1"/>
             <g class="roda__par" style="--r:var(--r1,0)">
-              <path class="roda__raio" d="M288.0,236.5 L382.0,243.5 A13.5,13.5 0 0 1 382.0,216.5 L288.0,223.5 A6.5,6.5 0 0 0 288.0,236.5 Z"/>
-              <path class="roda__raio" d="M172.0,223.5 L78.0,216.5 A13.5,13.5 0 0 1 78.0,243.5 L172.0,236.5 A6.5,6.5 0 0 0 172.0,223.5 Z"/>
+              <path class="roda__raio" d="M284.0,236.5 L382.0,243.0 L382.0,217.0 L284.0,223.5 Z"/>
+              <path class="roda__raio" d="M176.0,223.5 L78.0,217.0 L78.0,243.0 L176.0,236.5 Z"/>
+              <path class="roda__raioSombra" d="M284.0,236.5 L382.0,243.0"/>
+              <path class="roda__raioLuz" d="M284.0,223.5 L382.0,217.0"/>
+              <path class="roda__raioSombra" d="M176.0,236.5 L78.0,243.0"/>
+              <path class="roda__raioLuz" d="M176.0,223.5 L78.0,217.0"/>
             </g>
             <g class="roda__par" style="--r:var(--r2,0)">
-              <path class="roda__raio" d="M266.4,275.6 L327.9,347.0 A13.5,13.5 0 0 1 347.0,327.9 L275.6,266.4 A6.5,6.5 0 0 0 266.4,275.6 Z"/>
-              <path class="roda__raio" d="M193.6,184.4 L132.1,113.0 A13.5,13.5 0 0 1 113.0,132.1 L184.4,193.6 A6.5,6.5 0 0 0 193.6,184.4 Z"/>
+              <path class="roda__raio" d="M263.6,272.8 L328.3,346.7 L346.7,328.3 L272.8,263.6 Z"/>
+              <path class="roda__raio" d="M196.4,187.2 L131.7,113.3 L113.3,131.7 L187.2,196.4 Z"/>
+              <path class="roda__raioSombra" d="M272.8,263.6 L346.7,328.3"/>
+              <path class="roda__raioLuz" d="M263.6,272.8 L328.3,346.7"/>
+              <path class="roda__raioSombra" d="M187.2,196.4 L113.3,131.7"/>
+              <path class="roda__raioLuz" d="M196.4,187.2 L131.7,113.3"/>
             </g>
             <g class="roda__par" style="--r:var(--r3,0)">
-              <path class="roda__raio" d="M223.5,288.0 L216.5,382.0 A13.5,13.5 0 0 1 243.5,382.0 L236.5,288.0 A6.5,6.5 0 0 0 223.5,288.0 Z"/>
-              <path class="roda__raio" d="M236.5,172.0 L243.5,78.0 A13.5,13.5 0 0 1 216.5,78.0 L223.5,172.0 A6.5,6.5 0 0 0 236.5,172.0 Z"/>
+              <path class="roda__raio" d="M223.5,284.0 L217.0,382.0 L243.0,382.0 L236.5,284.0 Z"/>
+              <path class="roda__raio" d="M236.5,176.0 L243.0,78.0 L217.0,78.0 L223.5,176.0 Z"/>
+              <path class="roda__raioSombra" d="M236.5,284.0 L243.0,382.0"/>
+              <path class="roda__raioLuz" d="M223.5,284.0 L217.0,382.0"/>
+              <path class="roda__raioSombra" d="M236.5,176.0 L243.0,78.0"/>
+              <path class="roda__raioLuz" d="M223.5,176.0 L217.0,78.0"/>
             </g>
             <g class="roda__par" style="--r:var(--r4,0)">
-              <path class="roda__raio" d="M184.4,266.4 L113.0,327.9 A13.5,13.5 0 0 1 132.1,347.0 L193.6,275.6 A6.5,6.5 0 0 0 184.4,266.4 Z"/>
-              <path class="roda__raio" d="M275.6,193.6 L347.0,132.1 A13.5,13.5 0 0 1 327.9,113.0 L266.4,184.4 A6.5,6.5 0 0 0 275.6,193.6 Z"/>
+              <path class="roda__raio" d="M187.2,263.6 L113.3,328.3 L131.7,346.7 L196.4,272.8 Z"/>
+              <path class="roda__raio" d="M272.8,196.4 L346.7,131.7 L328.3,113.3 L263.6,187.2 Z"/>
+              <path class="roda__raioSombra" d="M196.4,272.8 L131.7,346.7"/>
+              <path class="roda__raioLuz" d="M187.2,263.6 L113.3,328.3"/>
+              <path class="roda__raioSombra" d="M272.8,196.4 L346.7,131.7"/>
+              <path class="roda__raioLuz" d="M263.6,187.2 L328.3,113.3"/>
             </g>
             <circle class="roda__oco" cx="230" cy="230" r="52"/>
           </g>
@@ -154,38 +187,43 @@
               <stop offset=".76" stop-color="#073E6D"/>
               <stop offset="1" stop-color="#052842"/>
             </linearGradient>
-            <linearGradient id="pneuG" x1=".18" y1="0" x2=".82" y2="1">
-              <stop offset="0" stop-color="#2B333B"/>
-              <stop offset=".38" stop-color="#171D23"/>
-              <stop offset=".72" stop-color="#0D1217"/>
-              <stop offset="1" stop-color="#1B2229"/>
+            <linearGradient id="luzPneu" gradientUnits="userSpaceOnUse" x1="67" y1="67" x2="393" y2="393">
+                <stop offset="0" stop-color="#3A434C"/>
+                <stop offset="0.34" stop-color="#1D242B"/>
+                <stop offset="0.7" stop-color="#0B0E12"/>
+                <stop offset="1" stop-color="#1A2027"/>
             </linearGradient>
-            <linearGradient id="aroG" x1=".1" y1="0" x2=".9" y2="1">
-              <stop offset="0" stop-color="#8C9AA6"/>
-              <stop offset=".32" stop-color="#48545F"/>
-              <stop offset=".66" stop-color="#232B33"/>
-              <stop offset="1" stop-color="#5B6874"/>
+            <linearGradient id="luzAro" gradientUnits="userSpaceOnUse" x1="67" y1="67" x2="393" y2="393">
+                <stop offset="0" stop-color="#D6E1EC"/>
+                <stop offset="0.3" stop-color="#7E8C99"/>
+                <stop offset="0.66" stop-color="#2A323A"/>
+                <stop offset="1" stop-color="#93A0AD"/>
             </linearGradient>
-            <linearGradient id="raioG" x1=".12" y1="0" x2=".88" y2="1">
-              <stop offset="0" stop-color="#5E6C79"/>
-              <stop offset=".40" stop-color="#2C343C"/>
-              <stop offset=".78" stop-color="#181E24"/>
-              <stop offset="1" stop-color="#3E4954"/>
+            <linearGradient id="luzRaio" gradientUnits="userSpaceOnUse" x1="67" y1="67" x2="393" y2="393">
+                <stop offset="0" stop-color="#6E7C8A"/>
+                <stop offset="0.32" stop-color="#252D35"/>
+                <stop offset="0.7" stop-color="#171C22"/>
+                <stop offset="1" stop-color="#3C4650"/>
             </linearGradient>
-            <radialGradient id="discoG" cx=".38" cy=".3" r=".8">
-              <stop offset="0" stop-color="#48515A"/>
-              <stop offset=".55" stop-color="#242B32"/>
-              <stop offset="1" stop-color="#101418"/>
-            </radialGradient>
-            <radialGradient id="porcaG" cx=".34" cy=".28" r=".8">
-              <stop offset="0" stop-color="#D8E2EC"/>
-              <stop offset=".5" stop-color="#8A97A4"/>
-              <stop offset="1" stop-color="#3A434C"/>
-            </radialGradient>
-            <radialGradient id="pocoG" cx=".36" cy=".3" r=".85">
-              <stop offset="0" stop-color="#2A323A"/>
-              <stop offset=".6" stop-color="#151B21"/>
-              <stop offset="1" stop-color="#090C10"/>
+            <linearGradient id="luzPoco" gradientUnits="userSpaceOnUse" x1="67" y1="67" x2="393" y2="393">
+                <stop offset="0" stop-color="#283038"/>
+                <stop offset="0.55" stop-color="#141A20"/>
+                <stop offset="1" stop-color="#080B0E"/>
+            </linearGradient>
+            <linearGradient id="luzDisco" gradientUnits="userSpaceOnUse" x1="67" y1="67" x2="393" y2="393">
+                <stop offset="0" stop-color="#556069"/>
+                <stop offset="0.5" stop-color="#272E36"/>
+                <stop offset="1" stop-color="#0F1317"/>
+            </linearGradient>
+            <linearGradient id="luzCubo" gradientUnits="userSpaceOnUse" x1="67" y1="67" x2="393" y2="393">
+                <stop offset="0" stop-color="#323B44"/>
+                <stop offset="0.6" stop-color="#151B21"/>
+                <stop offset="1" stop-color="#0A0D11"/>
+            </linearGradient>
+            <radialGradient id="porcaG" cx=".32" cy=".26" r=".85">
+              <stop offset="0" stop-color="#EAF2FA"/>
+              <stop offset=".45" stop-color="#9AA7B4"/>
+              <stop offset="1" stop-color="#333B44"/>
             </radialGradient>
           </defs>
           <path fill="url(#aco)" d="M 0,450.56 L 31.88,568.97 L 398.88,191.66 L 539.22,613 L 922.62,190.09 L 1003.79,481.69 L 1081,402.96 L 968.23,0 L 783.86,186.18 L 577.65,417.39 L 441.47,2.66 Z"/>
@@ -267,33 +305,60 @@
       <div class="portal__palco">
         <div class="portal__bruma" aria-hidden="true"></div>
         <svg class="roda roda--monta" viewBox="0 0 460 460" aria-hidden="true">
+          <ellipse class="roda__chao" cx="230" cy="430" rx="170" ry="20"/>
           <g class="roda__corpo">
             <circle class="roda__pneu" cx="230" cy="230" r="194"/>
-            <circle class="roda__sulco" cx="230" cy="230" r="212"/>
+            <circle class="roda__flanco" cx="230" cy="230" r="172"/>
+            <circle class="roda__flanco" cx="230" cy="230" r="182"/>
+            <circle class="roda__flanco" cx="230" cy="230" r="206"/>
+            <circle class="roda__flanco" cx="230" cy="230" r="216"/>
+            <path class="roda__brilhoPneu" d="M20.1,237.3 A210.0,210.0 0 0 1 200.8,22.0"/>
+            <path class="roda__recorte" d="M446.9,260.5 A219.0,219.0 0 0 1 290.4,440.5"/>
+            <circle class="roda__oclusao" cx="230" cy="230" r="166"/>
             <path class="roda__faixa" d="M43.5,176.5 A194.0,194.0 0 0 1 308.9,52.8"/>
             <path class="roda__faixa" d="M398.0,133.0 A194.0,194.0 0 0 1 308.9,407.2"/>
             <circle class="roda__poco" cx="230" cy="230" r="152"/>
             <circle class="roda__disco" cx="230" cy="230" r="118"/>
-            <circle class="roda__furos" cx="230" cy="230" r="96"/>
+            <circle class="roda__furos" cx="230" cy="230" r="98"/>
+            <circle class="roda__discoBorda" cx="230" cy="230" r="118"/>
             <circle class="roda__aro" cx="230" cy="230" r="158"/>
+            <path class="roda__aroLuz" d="M72.9,213.5 A158.0,158.0 0 0 1 224.5,72.1"/>
             <g class="roda__par" style="--r:var(--r1,0)">
-              <path class="roda__raio" d="M288.0,236.5 L382.0,243.5 A13.5,13.5 0 0 1 382.0,216.5 L288.0,223.5 A6.5,6.5 0 0 0 288.0,236.5 Z"/>
-              <path class="roda__raio" d="M172.0,223.5 L78.0,216.5 A13.5,13.5 0 0 1 78.0,243.5 L172.0,236.5 A6.5,6.5 0 0 0 172.0,223.5 Z"/>
+              <path class="roda__raio" d="M284.0,236.5 L382.0,243.0 L382.0,217.0 L284.0,223.5 Z"/>
+              <path class="roda__raio" d="M176.0,223.5 L78.0,217.0 L78.0,243.0 L176.0,236.5 Z"/>
+              <path class="roda__raioSombra" d="M284.0,236.5 L382.0,243.0"/>
+              <path class="roda__raioLuz" d="M284.0,223.5 L382.0,217.0"/>
+              <path class="roda__raioSombra" d="M176.0,236.5 L78.0,243.0"/>
+              <path class="roda__raioLuz" d="M176.0,223.5 L78.0,217.0"/>
             </g>
             <g class="roda__par" style="--r:var(--r2,0)">
-              <path class="roda__raio" d="M266.4,275.6 L327.9,347.0 A13.5,13.5 0 0 1 347.0,327.9 L275.6,266.4 A6.5,6.5 0 0 0 266.4,275.6 Z"/>
-              <path class="roda__raio" d="M193.6,184.4 L132.1,113.0 A13.5,13.5 0 0 1 113.0,132.1 L184.4,193.6 A6.5,6.5 0 0 0 193.6,184.4 Z"/>
+              <path class="roda__raio" d="M263.6,272.8 L328.3,346.7 L346.7,328.3 L272.8,263.6 Z"/>
+              <path class="roda__raio" d="M196.4,187.2 L131.7,113.3 L113.3,131.7 L187.2,196.4 Z"/>
+              <path class="roda__raioSombra" d="M272.8,263.6 L346.7,328.3"/>
+              <path class="roda__raioLuz" d="M263.6,272.8 L328.3,346.7"/>
+              <path class="roda__raioSombra" d="M187.2,196.4 L113.3,131.7"/>
+              <path class="roda__raioLuz" d="M196.4,187.2 L131.7,113.3"/>
             </g>
             <g class="roda__par" style="--r:var(--r3,0)">
-              <path class="roda__raio" d="M223.5,288.0 L216.5,382.0 A13.5,13.5 0 0 1 243.5,382.0 L236.5,288.0 A6.5,6.5 0 0 0 223.5,288.0 Z"/>
-              <path class="roda__raio" d="M236.5,172.0 L243.5,78.0 A13.5,13.5 0 0 1 216.5,78.0 L223.5,172.0 A6.5,6.5 0 0 0 236.5,172.0 Z"/>
+              <path class="roda__raio" d="M223.5,284.0 L217.0,382.0 L243.0,382.0 L236.5,284.0 Z"/>
+              <path class="roda__raio" d="M236.5,176.0 L243.0,78.0 L217.0,78.0 L223.5,176.0 Z"/>
+              <path class="roda__raioSombra" d="M236.5,284.0 L243.0,382.0"/>
+              <path class="roda__raioLuz" d="M223.5,284.0 L217.0,382.0"/>
+              <path class="roda__raioSombra" d="M236.5,176.0 L243.0,78.0"/>
+              <path class="roda__raioLuz" d="M223.5,176.0 L217.0,78.0"/>
             </g>
             <g class="roda__par" style="--r:var(--r4,0)">
-              <path class="roda__raio" d="M184.4,266.4 L113.0,327.9 A13.5,13.5 0 0 1 132.1,347.0 L193.6,275.6 A6.5,6.5 0 0 0 184.4,266.4 Z"/>
-              <path class="roda__raio" d="M275.6,193.6 L347.0,132.1 A13.5,13.5 0 0 1 327.9,113.0 L266.4,184.4 A6.5,6.5 0 0 0 275.6,193.6 Z"/>
+              <path class="roda__raio" d="M187.2,263.6 L113.3,328.3 L131.7,346.7 L196.4,272.8 Z"/>
+              <path class="roda__raio" d="M272.8,196.4 L346.7,131.7 L328.3,113.3 L263.6,187.2 Z"/>
+              <path class="roda__raioSombra" d="M196.4,272.8 L131.7,346.7"/>
+              <path class="roda__raioLuz" d="M187.2,263.6 L113.3,328.3"/>
+              <path class="roda__raioSombra" d="M272.8,196.4 L346.7,131.7"/>
+              <path class="roda__raioLuz" d="M263.6,187.2 L328.3,113.3"/>
             </g>
             <circle class="roda__cubo" cx="230" cy="230" r="52"/>
+            <circle class="roda__cuboLuz" cx="230" cy="230" r="52"/>
             <circle class="roda__porca" cx="230" cy="230" r="17"/>
+            <circle class="roda__porcaLuz" cx="223" cy="223" r="6"/>
           </g>
         </svg>
         <div class="portal__luz" aria-hidden="true"></div>

@@ -28,8 +28,8 @@
     this.raioAlvo = this.base();
     this.raio = this.raioAlvo;
 
-    this.ligar();
     this.animar();
+    this.ligar();
   }
 
   /* Raio de revelação partindo só da rolagem, de 0 a 1 dentro do hero. */
@@ -49,20 +49,21 @@
         eu.x = ((ev.clientX - r.left) / r.width) * 100;
         eu.y = ((ev.clientY - r.top) / r.height) * 100;
         eu.perto = true;
+        eu.acordar();
       }, { passive: true });
 
-      this.el.addEventListener('pointerleave', function () { eu.perto = false; });
+      this.el.addEventListener('pointerleave', function () { eu.perto = false; eu.acordar(); });
     }
 
-    global.addEventListener('scroll', function () { eu.raioAlvo = eu.base(); }, { passive: true });
-    global.addEventListener('resize', function () { eu.raioAlvo = eu.base(); });
+    global.addEventListener('scroll', function () { eu.raioAlvo = eu.base(); eu.acordar(); }, { passive: true });
+    global.addEventListener('resize', function () { eu.raioAlvo = eu.base(); eu.acordar(); });
   };
 
   Luz.prototype.animar = function () {
     var eu = this;
-    function quadro() {
-      requestAnimationFrame(quadro);
+    eu.rodando = false;
 
+    function quadro() {
       // Sem cursor em cima, a luz volta devagar para o centro
       var ax = eu.perto ? eu.x : eu.centro.x;
       var ay = eu.perto ? eu.y : eu.centro.y;
@@ -77,8 +78,26 @@
       s.setProperty('--mx', eu.mx.toFixed(2) + '%');
       s.setProperty('--my', eu.my.toFixed(2) + '%');
       s.setProperty('--raio', Math.round(eu.raio / 100 * larg) + 'px');
+
+      // Chegou no lugar, para. Sem isto o rAF roda para sempre, e cada quadro
+      // remexe a máscara em cima da foto do hero: é bateria de visitante
+      // queimando para não mudar nada na tela.
+      if (!eu.perto
+          && Math.abs(ax - eu.mx) < 0.05
+          && Math.abs(ay - eu.my) < 0.05
+          && Math.abs(eu.raioAlvo - eu.raio) < 0.2) {
+        eu.rodando = false;
+        return;
+      }
+      requestAnimationFrame(quadro);
     }
-    requestAnimationFrame(quadro);
+
+    eu.acordar = function () {
+      if (eu.rodando) return;
+      eu.rodando = true;
+      requestAnimationFrame(quadro);
+    };
+    eu.acordar();
   };
 
   global.LuzMoza = Luz;

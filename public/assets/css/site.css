@@ -31,7 +31,11 @@
    A palavra existe desde o começo e não se vê. O centro é a única coisa acesa.
    O cursor carrega luz; a rolagem faz a luz crescer a partir do centro.
    -------------------------------------------------------------------------- */
-.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;
+/* isolation:isolate é obrigatório aqui. A textura e os véus vivem em z-index
+   negativo, e sem um contexto de empilhamento próprio eles caem atrás do
+   fundo da própria seção: a foto carrega, ocupa a tela inteira, e não pinta
+   um pixel. Custou uma tarde para achar. */
+.hero{position:relative;isolation:isolate;min-height:100svh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:clamp(var(--s4),6vh,var(--s5));
   padding:clamp(96px,14vh,150px) 0 clamp(var(--s5),9vh,var(--s6));overflow:hidden}
 
@@ -391,11 +395,26 @@
    O preto do hero com uma imagem escura por baixo, pedido do Kauan. Ela dá
    material sem competir: a marca continua sendo o assunto.
    -------------------------------------------------------------------------- */
-.hero__textura{position:absolute;inset:0;z-index:-2;display:block;pointer-events:none}
-.hero__textura img{width:100%;height:100%;object-fit:cover;object-position:50% 38%;
-  filter:grayscale(.62) brightness(.42) contrast(1.18);opacity:.66}
+/* A foto ganha camada própria. A máscara da luz muda a cada quadro logo
+   acima dela, e sem camada separada o navegador refaz a imagem filtrada
+   junto, toda vez. */
+.hero__textura{position:absolute;inset:0;z-index:-2;display:block;
+  pointer-events:none}
+.hero__textura img{width:100%;height:100%;object-fit:cover;object-position:58% 54%;
+  filter:grayscale(.62) brightness(.40) contrast(1.10);opacity:.80}
+/* No retrato a foto é deitada e o corte come as laterais. Puxar para a roda,
+   que é o que precisa sobreviver ao enquadramento. */
+@media (max-width:899px){
+  .hero__textura img{object-position:64% 52%}
+}
+/* Dois véus com trabalhos diferentes: o radial afunda as bordas para a marca
+   ter onde aparecer, e o linear protege só a faixa de baixo, onde mora a copy.
+   Um véu só fazia as duas coisas mal: ou a foto sumia, ou o texto perdia
+   contraste. */
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:radial-gradient(115% 88% at 50% 46%, rgba(5,7,10,.52) 0%, rgba(5,7,10,.84) 46%, rgba(5,7,10,.97) 80%)}
+  background:
+    linear-gradient(to bottom, rgba(5,7,10,0) 40%, rgba(5,7,10,.70) 72%, rgba(5,7,10,.94) 100%),
+    radial-gradient(120% 94% at 50% 42%, rgba(5,7,10,.40) 0%, rgba(5,7,10,.76) 50%, rgba(5,7,10,.96) 84%)}
 
 /* --------------------------------------------------------------------------
    O cabeçalho acompanha o tom da seção
@@ -686,70 +705,100 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
 
 /* --------------------------------------------------------------------------
    A roda
-   Feita a partir da roda de F1 que o Kauan mandou de referência. O que veio de
-   lá é a proporção (pneu gordo, aro pequeno), a lâmina de raio que afina no
-   cubo e engorda no aro, o disco furado por trás, e a faixa de cor na lateral
-   do pneu. O que é nosso é a faixa em ciano e nenhuma marca escrita nela.
+   Feita a partir da roda de F1 que o Kauan mandou de referência.
 
-   Oito raios em quatro pares opostos, um par por raio do método. Roda se
-   aperta par a par, nunca raio a raio, então cada etapa fecha um par e a roda
-   fica equilibrada em todo passo da montagem.
+   O que faz desenho vetorial parecer material não é contorno, é luz. Aqui a
+   luz vem de uma direção só e todas as peças dividem o mesmo eixo de gradiente
+   (userSpaceOnUse, defs no index). Se cada peça tivesse a sua própria luz o
+   olho leria ilustração; dividindo a mesma, lê objeto.
 
-   Um componente, dois argumentos. No espelho ela monta sem cubo, treme, mostra
-   o vazio no meio e sai de tela rolando para a direita. No método o cubo é a
-   primeira peça e cada etapa prende um par nele, até a roda ficar inteira.
+   Em cima disso vêm as três coisas que vetor costuma esquecer: o especular no
+   ombro do pneu, a oclusão onde duas peças se encontram, e a luz de recorte na
+   borda oposta à fonte. Cada uma sozinha não faz diferença. Juntas, fazem.
+
+   Oito raios em quatro pares opostos, um par por raio do método: roda se
+   aperta par a par, nunca raio a raio.
    -------------------------------------------------------------------------- */
 .roda{width:min(54vw,780px);height:auto;pointer-events:none;overflow:visible;
   --pneu:1;--faixa:1;--a:1;--r1:1;--r2:1;--r3:1;--r4:1;--cubo:1;--oco:1;--sai:0}
 .roda__corpo{transform-origin:230px 230px;
   transform:translateX(calc(var(--sai,0) * 760px)) rotate(calc(var(--sai,0) * 430deg))}
+/* A sombra acompanha a saída mas não gira: sombra de chão não roda. */
+.roda__chao{fill:rgba(10,32,64,.24);filter:blur(17px);
+  opacity:calc(var(--pneu,0) * .9);
+  transform:translateX(calc(var(--sai,0) * 760px))}
 
-/* O pneu se enrola no aro: traço grosso que vai fechando a volta. */
-.roda__pneu{fill:none;stroke:url(#pneuG);stroke-width:62;
+/* ---- pneu ---- */
+.roda__pneu{fill:none;stroke:url(#luzPneu);stroke-width:62;
   stroke-dasharray:1220;stroke-dashoffset:calc((1 - var(--pneu,0)) * 1220px);
   transform:rotate(-90deg);transform-origin:230px 230px}
-/* O brilho que corre no ombro do pneu. Sem ele a borracha fica de papel. */
-.roda__sulco{fill:none;stroke:rgba(214,230,244,.30);stroke-width:1.4;
-  stroke-dasharray:1332;stroke-dashoffset:calc((1 - var(--pneu,0)) * 1332px);
-  transform:rotate(-90deg);transform-origin:230px 230px}
+/* Anéis de moldagem no flanco. Ao cubo para só aparecerem quando o pneu
+   estiver quase inteiro: relevo em borracha que ainda não existe é erro. */
+.roda__flanco{fill:none;stroke:rgba(226,240,255,.055);stroke-width:1;
+  opacity:calc(var(--pneu,0) * var(--pneu,0) * var(--pneu,0))}
+.roda__brilhoPneu{fill:none;stroke:rgba(228,241,255,.46);stroke-width:17;
+  stroke-linecap:round;filter:blur(10px);
+  opacity:calc(var(--pneu,0) * var(--pneu,0) * var(--pneu,0))}
+.roda__recorte{fill:none;stroke:rgba(150,200,255,.34);stroke-width:4;
+  stroke-linecap:round;filter:blur(3px);
+  opacity:calc(var(--pneu,0) * var(--pneu,0) * var(--pneu,0))}
+.roda__oclusao{fill:none;stroke:rgba(0,0,0,.62);stroke-width:16;filter:blur(7px);
+  opacity:calc(var(--pneu,0) * var(--a,0))}
 
 .roda__faixa{fill:none;stroke:var(--ciano);stroke-width:9;stroke-linecap:butt;
-  stroke-dasharray:310;stroke-dashoffset:calc((1 - var(--faixa,0)) * 310px);
+  stroke-dasharray:340;stroke-dashoffset:calc((1 - var(--faixa,0)) * 340px);
   opacity:.92}
 
-.roda__poco{fill:url(#pocoG)}
+/* ---- poço e freio ---- */
+.roda__poco{fill:url(#luzPoco)}
 .roda--monta .roda__poco{opacity:var(--cubo,0)}
 .roda--oca .roda__poco{opacity:calc(var(--a,0) * var(--a,0))}
-.roda__disco{fill:url(#discoG)}
-.roda__furos{fill:none;stroke:rgba(8,12,16,.85);stroke-width:5.5;
-  stroke-dasharray:3 10;stroke-linecap:round}
-.roda--oca .roda__disco,.roda--oca .roda__furos{display:none}
-.roda--monta .roda__disco,.roda--monta .roda__furos{
+.roda__disco{fill:url(#luzDisco)}
+.roda__discoBorda{fill:none;stroke:rgba(150,172,194,.16);stroke-width:1.4}
+.roda__furos{fill:none;stroke:rgba(6,9,12,.75);stroke-width:5;
+  stroke-dasharray:2.5 13;stroke-linecap:round}
+.roda--oca .roda__disco,.roda--oca .roda__discoBorda,.roda--oca .roda__furos{display:none}
+.roda--monta .roda__disco,.roda--monta .roda__discoBorda,.roda--monta .roda__furos{
   opacity:var(--cubo,0);transform-origin:230px 230px;
-  transform:scale(calc(.86 + var(--cubo,0) * .14))}
+  transform:scale(calc(.88 + var(--cubo,0) * .12))}
 
-.roda__aro{fill:none;stroke:url(#aroG);stroke-width:11;
+/* ---- aro ---- */
+.roda__aro{fill:none;stroke:url(#luzAro);stroke-width:12;
   stroke-dasharray:993;stroke-dashoffset:calc((1 - var(--a,0)) * 993px);
   transform:rotate(-90deg);transform-origin:230px 230px}
+.roda__aroLuz{fill:none;stroke:rgba(244,250,255,.5);stroke-width:3;
+  stroke-linecap:round;filter:blur(1.6px);
+  opacity:calc(var(--a,0) * var(--a,0))}
 
-/* O par entra girando um pouco e assenta. É o gesto de encaixar, não de surgir. */
+/* ---- raios ---- */
 .roda__par{transform-origin:230px 230px;
   transform:rotate(calc((1 - var(--r,0)) * -13deg));
   opacity:var(--r,0)}
-.roda__raio{fill:url(#raioG)}
+.roda__raio{fill:url(#luzRaio)}
+/* Fio de luz na face voltada para a fonte, fio escuro na oposta. É o que dá
+   espessura à lâmina sem desenhar espessura nenhuma. */
+.roda__raioLuz{fill:none;stroke:rgba(238,246,255,.55);stroke-width:1.6;
+  stroke-linecap:round}
+.roda__raioSombra{fill:none;stroke:rgba(0,0,0,.5);stroke-width:2.4;
+  stroke-linecap:round}
 
-.roda__cubo{fill:#141A20;transform-origin:230px 230px;
+/* ---- centro ---- */
+.roda__cubo{fill:url(#luzCubo);transform-origin:230px 230px;
+  transform:scale(calc(.7 + var(--cubo,0) * .3));opacity:var(--cubo,0)}
+.roda__cuboLuz{fill:none;stroke:rgba(214,230,246,.30);stroke-width:1.4;
+  transform-origin:230px 230px;
   transform:scale(calc(.7 + var(--cubo,0) * .3));opacity:var(--cubo,0)}
 .roda__porca{fill:url(#porcaG);transform-origin:230px 230px;
   transform:scale(calc(.4 + var(--cubo,0) * .6));opacity:var(--cubo,0)}
+.roda__porcaLuz{fill:rgba(255,255,255,.7);filter:blur(2.5px);
+  opacity:calc(var(--cubo,0) * var(--cubo,0))}
 
 /* O centro que ninguém construiu. Tracejado porque é ausência, não peça. */
 .roda__oco{fill:none;stroke:var(--ciano);stroke-width:3;stroke-dasharray:3 12;
   stroke-linecap:round;opacity:calc(var(--oco,0) * .9);
   transform-origin:230px 230px;transform:scale(calc(.62 + var(--oco,0) * .38))}
 
-.roda.tremendo{animation:bamba 2.1s ease-in-out infinite;
-  transform-origin:50% 50%}
+.roda.tremendo{animation:bamba 2.1s ease-in-out infinite;transform-origin:50% 50%}
 @keyframes bamba{
   0%,100%{transform:rotate(0deg)}
   26%{transform:rotate(1.8deg)}
@@ -758,6 +807,7 @@ html[data-tom="claro"] .topo__marca .naClara{display:block}
 @media (prefers-reduced-motion:reduce){
   .roda.tremendo{animation:none}
 }
+
 
 
 /* --------------------------------------------------------------------------

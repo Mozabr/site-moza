@@ -147,6 +147,31 @@ dentro de subárvore escondida não resolve: o path fica sem tinta e o M
 simplesmente não aparece. Isso pegava todo visitante de celular, que é a
 maioria. Se mover os defs de novo, conferir em 393px antes de subir.
 
+## Filho em z-index negativo precisa de contexto próprio
+
+`.hero` leva `isolation:isolate`. A textura e os véus do hero vivem em z-index
+negativo, e sem um contexto de empilhamento na própria seção eles caem atrás
+do fundo dela: a foto carrega, ocupa a tela inteira e **não pinta um pixel**.
+O sintoma é traiçoeiro porque tudo parece certo no DOM. O jeito de confirmar é
+amostrar o pixel renderizado: se ele dá exatamente a cor de fundo (`5,7,10`),
+a camada não está pintando, não está escura.
+
+## Imagem de fonte não entra no git
+
+`Fontes/` está no `.gitignore` menos o `LEIA-ME.md`, que registra a origem e a
+licença de cada arquivo. **Antes de publicar qualquer imagem, conferir a
+origem** com `mdls -name kMDItemWhereFroms arquivo.jpg`. Borrar logo resolve
+confusão de marca, não resolve direito autoral: o que se licencia é a
+fotografia, não o que aparece nela.
+
+## O modo headless antigo trava nesta máquina
+
+`--headless` (antigo) pendura por minutos; `--headless=new` resolve. O
+`foto.mjs` e o `qa.mjs` já usam o novo. Se uma captura travar, conferir também
+a memória livre (`vm_stat`): com o Chrome do Kauan aberto sobra pouca, e aí
+qualquer render fica lento. Nunca matar Chrome por nome: só os processos com
+`user-data-dir=/tmp/moza-*` são nossos.
+
 ## O site rola suave, a sonda não pode
 
 `html` tem `scroll-behavior:smooth`. Qualquer `scrollTo` de ferramenta precisa
