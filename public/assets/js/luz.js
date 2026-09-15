@@ -17,6 +17,9 @@
     if (!this.marca) return;
 
     this.calmo = global.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.foto = el.querySelector('.hero__textura img');
+    this.nasceu = performance.now();
+    this.entrando = !this.calmo;
     this.fino = !global.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
     // Onde fica o centro do "o" dentro do quadro da marca, em porcentagem.
@@ -79,10 +82,12 @@
       s.setProperty('--my', eu.my.toFixed(2) + '%');
       s.setProperty('--raio', Math.round(eu.raio / 100 * larg) + 'px');
 
+      eu.afastar();
+
       // Chegou no lugar, para. Sem isto o rAF roda para sempre, e cada quadro
       // remexe a máscara em cima da foto do hero: é bateria de visitante
       // queimando para não mudar nada na tela.
-      if (!eu.perto
+      if (!eu.perto && !eu.entrando
           && Math.abs(ax - eu.mx) < 0.05
           && Math.abs(ay - eu.my) < 0.05
           && Math.abs(eu.raioAlvo - eu.raio) < 0.2) {
@@ -91,6 +96,25 @@
       }
       requestAnimationFrame(quadro);
     }
+
+    /* O afastamento da foto. Ela entra fechada e recua sozinha ao abrir a
+       página, e continua recuando conforme a rolagem atravessa o hero. A folga
+       de 7% no enquadramento existe para a escala poder cair abaixo de 1 sem
+       mostrar borda. */
+    eu.afastar = function () {
+      if (!eu.foto) return;
+      if (eu.calmo) { eu.foto.style.setProperty('--zoom', '1'); eu.entrando = false; return; }
+
+      var t = Math.min(1, (performance.now() - eu.nasceu) / 2400);
+      var suave = 1 - Math.pow(2, -10 * t);        // recuo longo, sem freada
+      var entrada = 1.22 - suave * 0.22;
+      eu.entrando = t < 1;
+
+      var r = eu.el.getBoundingClientRect();
+      var rolou = Math.min(1, Math.max(0, -r.top / Math.max(r.height, 1)));
+
+      eu.foto.style.setProperty('--zoom', (entrada * (1 - rolou * 0.07)).toFixed(4));
+    };
 
     eu.acordar = function () {
       if (eu.rodando) return;

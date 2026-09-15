@@ -3,17 +3,24 @@
 O que pode ir para o ar e o que não pode. Conferido pelos metadados de origem
 (`mdls -name kMDItemWhereFroms`) em 15/09/2026.
 
-## Liberada
+## Liberadas (Pexels, uso comercial sem atribuição)
 
-**`pexels-jonathanborba-34722736.jpg`**
-Origem: pexels.com. Autor: Jonathan Borba. Licença Pexels, que permite uso
-comercial sem atribuição. **É a única das três que pode ser publicada.**
-Está no ar, recortada na roda e na asa, em `public/assets/img/hero/pista-*`.
-As marcas de patrocínio (aws, hp, escrita da carenagem) foram apagadas na
-própria imagem por desfoque local, não por CSS: assim não voltam se alguém
-mexer no estilo.
+**`pexels-jan-zilla-89806192-9075316.jpg`** — **é a que está no ar.**
+Panorâmica com arrasto: o fundo vira risco e o carro é o único ponto parado.
+Recortada em 16:9 e com Shell, escudo e Ray-Ban apagados na própria imagem,
+pintados por cima com a tira de lataria logo acima. Não é desfoque: é a tinta
+do próprio carro, então o carro continua nítido. Sai em
+`public/assets/img/hero/pista-*`.
 
-## Não liberadas
+**`pexels-adrien-gambet-537682496-39520687.jpg`** — testada e descartada.
+Mesmo escurecida, "MSC" e "Globant" continuam legíveis (a placa aparece seis
+vezes), e a arquibancada briga com a marca no hero.
+
+**`pexels-jonathanborba-34722736.jpg`** — foi a primeira a subir, trocada
+depois. O Kauan achou o recorte borrado demais, e estava certo: para apagar
+aws e hp tive que desfocar muito, e o desfoque comeu a qualidade.
+
+## Não liberadas (não vão para o ar)
 
 **`lewis_hamilton_hans_soymotor.com_.jpg`**
 Origem: soymotor.com, um site de notícias de automobilismo, salva pelo Google
